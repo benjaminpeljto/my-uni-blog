@@ -6,6 +6,10 @@
 
     });
 
+    Flight::route('/page/@id', function($id){
+        echo 'This is page '.$id.'!';
+    });
+
     Flight::start();
 
 ?>
