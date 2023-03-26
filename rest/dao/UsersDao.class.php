@@ -62,6 +62,15 @@ class UsersDao{
         $stmt->execute();
     }
 
+
+    /*
+    * Method for deleting an user from the database
+    */
+    public function delete_user($id){
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE user_id = :id");
+        $stmt->bindParam(":id",$id); //prevents an SQL injection
+        $stmt->execute();
+    }
     
 
 
