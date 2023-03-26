@@ -36,30 +36,18 @@ class UsersDao{
     /*
     * Method for adding a new user to the database
     */
-    public function add_user($fname,$lname,$age){
-        $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES('$fname','$lname','$age');");
-        $stmt->execute();
+    public function add_user($first_name, $last_name, $age){
+        $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES (:first_name,:last_name,:age);");
+        $stmt->execute(['first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
     }
 
-
-    /*
-    * Method for adding a new user to the database, provided first_name and last_name from the url
-    * using the GET global variable
-    */
-    public function add_user_url(){
-        $fname = $_REQUEST["first_name"];
-        $lname = $_REQUEST["last_name"];
-        $age = $_REQUEST["age"];
-        $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES('$fname','$lname','$age');");
-        $stmt->execute();
-    }
 
     /*
     * Method for updating an existing user in the database
     */
     public function update_user($id, $first_name, $last_name, $age){
-        $stmt = $this->conn->prepare("UPDATE users SET first_name='$first_name', last_name = '$last_name', age = $age WHERE user_id = $id");
-        $stmt->execute();
+        $stmt = $this->conn->prepare("UPDATE users SET first_name=:first_name, last_name = :last_name, age = :age WHERE user_id = :id");
+        $stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
     }
 
 
