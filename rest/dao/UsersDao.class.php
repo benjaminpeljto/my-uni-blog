@@ -54,6 +54,23 @@ class UsersDao{
         $stmt->execute();
     }
 
+    /*
+    * Method for updating an existing user in the database
+    */
+    public function update_user($id, $first_name, $last_name, $age){
+        $stmt = $this->conn->prepare("UPDATE users SET first_name='$first_name', last_name = '$last_name', age = $age WHERE user_id = $id");
+        $stmt->execute();
+    }
+
+
+    /*
+    * Method for deleting an user from the database
+    */
+    public function delete_user($id){
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE user_id = :id");
+        $stmt->bindParam(":id",$id); //prevents an SQL injection
+        $stmt->execute();
+    }
     
 
 
