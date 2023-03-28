@@ -46,9 +46,9 @@ class UsersDao{
     /*
     * Method for adding a new user to the database
     */
-    public function add_user($first_name, $last_name, $age){
+    public function add_user($user){
         $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES (:first_name,:last_name,:age);");
-        $stmt->execute(['first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
+        $stmt->execute($user);
     }
 
 
