@@ -55,10 +55,11 @@ class UsersDao{
     /*
     * Method for updating an existing user in the database
     */
-    public function update_user($id, $first_name, $last_name, $age){
+    public function update_user($user){
         $stmt = $this->conn->prepare("UPDATE users SET first_name=:first_name, last_name = :last_name, age = :age WHERE user_id = :id");
-        $stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
+        $stmt->execute($user);
     }
+    //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
 
 
     /*
