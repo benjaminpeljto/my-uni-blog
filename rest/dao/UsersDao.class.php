@@ -32,6 +32,16 @@ class UsersDao{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /*
+    * Method for fetching a specific user from the database
+    */
+
+    public function get_by_id($id){
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE user_id=:id");
+        $stmt->execute(['id'=>$id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /*
     * Method for adding a new user to the database
