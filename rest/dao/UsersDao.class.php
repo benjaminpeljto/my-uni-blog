@@ -60,6 +60,7 @@ class UsersDao{
     public function update_user($user){
         $stmt = $this->conn->prepare("UPDATE users SET first_name=:first_name, last_name = :last_name, age = :age WHERE user_id = :id");
         $stmt->execute($user);
+        return $user;
     }
     //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
 
