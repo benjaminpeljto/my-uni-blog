@@ -57,9 +57,9 @@ class UsersDao{
     /*
     * Method for updating an existing user in the database
     */
-    public function update_user($user){
+    public function update_user($user,$id){
         $stmt = $this->conn->prepare("UPDATE users SET first_name=:first_name, last_name = :last_name, age = :age WHERE user_id = :id");
-        $stmt->execute($user);
+        $stmt->execute([$user,'id'=>$id]);
         return $user;
     }
     //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
