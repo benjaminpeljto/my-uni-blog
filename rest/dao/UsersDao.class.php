@@ -46,19 +46,24 @@ class UsersDao{
     /*
     * Method for adding a new user to the database
     */
-    public function add_user($first_name, $last_name, $age){
+    public function add_user($user){
         $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES (:first_name,:last_name,:age);");
-        $stmt->execute(['first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
+        $stmt->execute($user);
+        $user['id'] = $this->conn->lastInsertId();
+        return $user;
     }
 
 
     /*
     * Method for updating an existing user in the database
     */
-    public function update_user($id, $first_name, $last_name, $age){
+    public function update_user($user,$id){
+        $user['id'] = $id;
         $stmt = $this->conn->prepare("UPDATE users SET first_name=:first_name, last_name = :last_name, age = :age WHERE user_id = :id");
-        $stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
+        $stmt->execute($user);
+        return $user;
     }
+    //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
 
 
     /*
