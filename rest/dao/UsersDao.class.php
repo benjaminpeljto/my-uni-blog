@@ -49,6 +49,8 @@ class UsersDao{
     public function add_user($user){
         $stmt = $this->conn->prepare("INSERT INTO users (first_name,last_name,age) VALUES (:first_name,:last_name,:age);");
         $stmt->execute($user);
+        $user['id'] = $this->conn->lastInsertId();
+        return $user;
     }
 
 
