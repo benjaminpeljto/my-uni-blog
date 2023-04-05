@@ -13,6 +13,10 @@
         Flight::json(Flight::userDao()->get_by_id($id));
     });
 
+    Flight::route("GET /usersById", function(){
+        Flight::json(Flight::userDao()->get_by_id(Flight::request()->query['id']));
+    });
+
     Flight::route("DELETE /users/@id", function($id){
         Flight::userDao()->delete_user($id);
         Flight::json(['message'=>'User by id ' . $id . ' has been deleted.']);
