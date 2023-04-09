@@ -1,6 +1,7 @@
 <?php
 
-require_once("UsersDao.class.php");
+require_once __DIR__ . "/rest/dao/UsersDao.class.php";
+require_once __DIR__ . "/rest/services/UserService.php";
 
 $dao = new UsersDao();
 
@@ -26,6 +27,8 @@ switch($type){
         $dao->delete($id);
         break;
     case 'get':
+        $service = new UserService();
+        $result = $service->get_all();
     default:
         $result = $dao->get_all();
         print_r($result);
