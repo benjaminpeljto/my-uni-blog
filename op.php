@@ -12,18 +12,18 @@ switch($type){
         $fname = $_REQUEST["first_name"];
         $lname = $_REQUEST["last_name"];
         $age = $_REQUEST["age"];
-        $dao->add_user("$fname","$lname",$age);
+        $dao->add("$fname","$lname",$age);
         break;
     case 'update':
         $id = $_REQUEST["id"];
         $fname = $_REQUEST["first_name"];
         $lname = $_REQUEST["last_name"];
         $age = $_REQUEST["age"];
-        $dao->update_user($id,"$fname","$lname",$age);
+        $dao->update($id,"$fname","$lname",$age);
         break;
     case 'delete':
         $id = $_REQUEST["id"];
-        $dao->delete_user($id);
+        $dao->delete($id);
         break;
     case 'get':
     default:
