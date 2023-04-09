@@ -1,8 +1,7 @@
 <?php
+require_once "BaseDao.class.php";
 
 class UsersDao extends BaseDao{
-
-    private $conn;
     /*
     * Constructor for establishing the connection to the database
     */

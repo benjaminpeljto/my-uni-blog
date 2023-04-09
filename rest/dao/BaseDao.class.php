@@ -1,9 +1,8 @@
 <?php
 
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 class BaseDao{
-
     protected $conn;
     protected $table_name;
 
@@ -60,11 +59,10 @@ class BaseDao{
         $query = substr($query,0,-2);
         $query .= ") VALUES (";
         foreach($entity as $key=>$value){
-            $query .= $value . ", ";
+            $query .= ":". $key . ", ";
         }
         $query = substr($query,0,-2);
-        $query = ")";
-        
+        $query .= ")";
 
         $stmt = $this->conn->prepare($query);
         $stmt-> execute($entity); //binding to prevent injections
@@ -77,18 +75,18 @@ class BaseDao{
     /*
     * Method for updating an existing user in the database
     */
-    public function update($id, $entity, $id_column = 'id'){
+    public function update($entity, $id, $id_column = 'id'){
         $query = "UPDATE $this->table_name SET ";
         foreach($entity as $key=>$value){
-            $query .= $key . "=:" . $value . ", ";
+            $query .= $key . "=:" . $key . ", ";
         }
-        substr($query,0,-2);
-        $query .= "WHERE $id_column = :id";
-
+        $query = substr($query,0,-2);
+        $query .= " WHERE $id_column =:id;";
+        
         $stmt = $this->conn->prepare($query);
         $entity['id'] = $id;
         $stmt->execute($entity);
-
+        return $entity;
     }
     //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
 
