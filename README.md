@@ -6,7 +6,7 @@ Made by: @benjaminpeljto & @Tarik-7 & @dzelilatin
 Instructions for running the app on a device:
 
 1. Create config.php file in "Web-Programming2023_Blog/rest" and write the following in it:
-
+```hack
 <?php
 
 class Config{
@@ -19,10 +19,13 @@ class Config{
 }
 
 ?>
-
+```
 2. If error 404, change the .htaccess file code to the following:
-  
+  ```ApacheConf
   RewriteEngine On
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.php [QSA,L]
+```
+
+3. 
