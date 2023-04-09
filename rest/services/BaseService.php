@@ -9,11 +9,11 @@ class BaseService{
     }
 
     public function get_all(){
-        $this->dao->get_all;
+        return $this->dao->get_all();
     }
     
     public function get_by_id($id){
-        $this->dao->get_by_id($id);
+        return $this->dao->get_by_id($id);
     }
 
     public function delete($id){
@@ -21,13 +21,13 @@ class BaseService{
     }
 
     public function add($entity){
-        $this->dao->add($entity);
+        return $this->dao->add($entity);
     }
 
     public function update($entity,$id){
-        $this->dao->update($entity,$id);
+        return $this->dao->update($entity,$id);
     }
 
-    
+
 }
 ?>
