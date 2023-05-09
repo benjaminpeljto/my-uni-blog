@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/BaseDao.class.php";
 
-class UsersDao extends BaseDao
+class BlogsDao extends BaseDao
 {
     /*
      * Constructor for establishing the connection to the database
