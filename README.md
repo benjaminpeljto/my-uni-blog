@@ -27,5 +27,13 @@ class Config{
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)$ index.php [QSA,L]
 ```
+But for me, I need to add this route in order to work (ofcourse this just works for me)
+  ```ApacheConf
+  RewriteEngine On
+  RewriteBase /web-Programming2023_Blog/rest/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.php [QSA,L]
+```
 
 3. 
