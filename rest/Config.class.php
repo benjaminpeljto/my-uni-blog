@@ -10,12 +10,12 @@ class Config
 
     public static function DB_SCHEME()
     {
-        return Config::get_env('DB_NAME', 'web_blog_12_06_2023');
+        return Config::get_env('DB_SCHEME', 'web_blog_12_06_2023');
     }
 
     public static function DB_USERNAME()
     {
-        return Config::get_env('DB_USER', 'web_blog_user');
+        return Config::get_env('DB_USERNAME', 'web_blog_user');
     }
 
     public static function DB_PASSWORD()
