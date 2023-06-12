@@ -15,7 +15,7 @@ class Config
 
     public static function DB_USERNAME()
     {
-        return Config::get_env('DB_USERNAME', 'web_blog_user');
+        return Config::get_env('DB_USERNAME', 'web_project_user');
     }
 
     public static function DB_PASSWORD()
