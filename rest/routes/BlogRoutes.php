@@ -3,6 +3,10 @@ Flight::route("GET /blogs", function () {
     Flight::json(Flight::blogService()->get_all());
 });
 
+Flight::route("GET /blogswithuser", function () {
+    Flight::json(Flight::blogService()->get_blogs_with_user());
+});
+
 Flight::route("GET /blog/@id", function ($id) {
     Flight::json(Flight::blogService()->get_by_id($id));
 });
