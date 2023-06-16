@@ -11,4 +11,8 @@ class BlogService extends BaseService
         parent::__construct(new BlogsDao);
     }
 
+    public function get_blogs_with_user(){
+        return $this->dao->get_blogs_with_user();
+    }
+
 }
