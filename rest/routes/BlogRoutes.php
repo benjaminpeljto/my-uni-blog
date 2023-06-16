@@ -19,7 +19,7 @@ Flight::route("DELETE /blogs/@id", function ($id) {
 Flight::route("POST /blogs", function () {
     $data = Flight::request()->data->getData();
     $response = Flight::blogService()->add($data);
-    Flight::json(['message' => 'blog added sucessfully.', 'Data: ' => $response]);
+    Flight::json(['message' => 'blog added successfully.', 'Data: ' => $response]);
 
 });
 
