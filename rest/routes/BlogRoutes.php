@@ -3,6 +3,14 @@ Flight::route("GET /blogs", function () {
     Flight::json(Flight::blogService()->get_all());
 });
 
+Flight::route("GET /blogswithuser", function () {
+    Flight::json(Flight::blogService()->get_blogs_with_user());
+});
+
+Flight::route("GET /blogwithuser/@id", function ($id){
+    Flight::json(Flight::blogService()->get_blog_with_user_by_id($id));
+});
+
 Flight::route("GET /blog/@id", function ($id) {
     Flight::json(Flight::blogService()->get_by_id($id));
 });
@@ -19,7 +27,7 @@ Flight::route("DELETE /blogs/@id", function ($id) {
 Flight::route("POST /blogs", function () {
     $data = Flight::request()->data->getData();
     $response = Flight::blogService()->add($data);
-    Flight::json(['message' => 'blog added sucessfully.', 'Data: ' => $response]);
+    Flight::json(['message' => 'blog added successfully.', 'Data: ' => $response]);
 
 });
 
