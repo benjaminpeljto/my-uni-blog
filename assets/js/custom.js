@@ -28,6 +28,11 @@ $(function() {
     load: "favorites.html"
   });
 
+  app.route({
+    view: "blog",
+    load: "blog.html"
+  });
+
   // run app
   app.run();
 
