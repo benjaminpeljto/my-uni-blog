@@ -8,4 +8,12 @@
   line-height: 1.5;
 }
 
+.createbuttonnavlink:hover {
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=custom.css.map */
