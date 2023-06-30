@@ -9,6 +9,16 @@ class UserService extends BaseService{
         parent::__construct(new UsersDao);
     }
 
+    function getUserByEmail($email){
+        return $this->dao->getUserByEmail($email);
+    }
+
+    function add($entity){
+        unset($entity['password2']);
+        $entity['password'] = md5($entity['password']);
+        parent::add($entity);
+    }
+
     
 }
 ?>
