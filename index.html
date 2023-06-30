@@ -32,12 +32,7 @@
     <!-- My style -->
     <link rel="stylesheet" href="assets/css/custom.css">
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- jquery for SPApp -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="assets/js/jquery.spapp.js"></script>
 </head>
 
 <body>
@@ -62,25 +57,97 @@
     <main id="spapp" role="main">
         <section id="about"></section>
         <section id="contact"></section>
-        <section id="login"></section>
         <section id="blog"></section>
         <section id="home"></section>
     </main>
 
 
 
+    <!-- Create post modal -->
+    <div class="modal fade" id="createBlogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="addStudentForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title">New blog</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="first_name">Blog title:</label>
+                            <input
+                                    type="text"
+                                    id="first_name"
+                                    name="first_name"
+                                    required
+                                    class="form-control"
+                                    placeholder="Enter blog title"
+                            />
+                        </div>
+                        <div>
+                            <label for="blog_content">Blog content:</label>
+                            <textarea
+                                    id="blog_content"
+                                    name="blog_content"
+                                    rows="15" cols="30"
+                                    class="form-control"
+                                    placeholder="Enter blog content (minimum 300 words)"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="error"><span></span></div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                onclick="hideCreateModal()"
+                        >Close</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- jquery for SPApp -->
+    <script src="assets/js/jquery.spapp.js"></script>
 
     <!-- JS for SPApp -->
     <script src="assets/js/custom.js"></script>
 
     <!-- navigation bar JS -->
-    <script src="assets/js/navigation_bar.js"></script>
+    <script src="assets/js/navigation_bar-service.js"></script>
 
     <!-- blogs JS -->
-    <script src="assets/js/blogs_service.js"></script>
+    <script src="assets/js/blogs-service.js"></script>
 
+    <script src="assets/js/login-service.js"></script>
+    <script src="assets/js/utils.js"></script>
+
+    <script>
+        LoginService.checkLoginStatus();
+    </script>
 
 
 </body>
