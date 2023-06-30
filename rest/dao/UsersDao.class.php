@@ -9,6 +9,17 @@ class UsersDao extends BaseDao{
         parent::__construct("users");
     }
 
+    /*
+     *  Method for getting first user with forwarded email
+     */
+    public function getUserByEmail($email){
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email=:email");
+        $stmt->execute(['email'=>$email]);
+        $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return reset($array);
+    }
+
+
 
 
     /*
