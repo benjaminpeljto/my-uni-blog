@@ -99,7 +99,7 @@
                         <button
                                 type="button"
                                 class="btn btn-default"
-                                onclick="hideCreateModal()"
+                                onclick="BlogsService.closeCreateModal()"
                         >Close</button>
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>
@@ -146,6 +146,7 @@
     <script src="assets/js/utils.js"></script>
 
     <script>
+        BlogsService.init();
         LoginService.checkLoginStatus();
     </script>
 
