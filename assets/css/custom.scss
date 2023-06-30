@@ -8,3 +8,27 @@
   font-size: 1.25rem;
   line-height: 1.5;
 }
+
+.createbuttonnavlink:hover {
+  cursor: pointer;
+}
+
+.nav-item:hover{
+  cursor: pointer;
+}
+
+.login-signup-here-word{
+  color: #00FFFF;
+}
+.login-signup-here-word:hover{
+  color: #0d6efd;
+  cursor: pointer;
+}
+
+.login-signup-question{
+  margin-top: 1rem;
+}
+
+.error{
+  color:red;
+}
