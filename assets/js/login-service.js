@@ -55,10 +55,7 @@ var LoginService = {
         // This function should also check if the user is an admin and display the admin functions if so
 
         var token = localStorage.getItem("user_token");
-        console.log("before parsing" + token);
         if(token){
-            var user = Utils.parseJwt(token);
-            console.log("after parsing" + user);
             // if(user.is_admin){
             //     $("#users-link").removeClass("hide");
             // }
