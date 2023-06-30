@@ -3,6 +3,7 @@ var BlogsService = {
 
     init:function (){
         BlogsService.getBlogs();
+        BlogsService.createBlog();
     },
 
     getBlogs: function () {
@@ -92,5 +93,79 @@ var BlogsService = {
         const day = dateParts[2];
         const formattedDate = `${month} ${day}, ${year}`;
         return formattedDate;
+    },
+
+    createBlog: function (){
+        $.validator.addMethod("minThreeSentences", function(value, element) {
+            var sentences = value.split('.');
+            sentences = sentences.filter(function(sentence) {
+                return sentence.trim() !== '';
+            });
+            return sentences.length >= 3;
+        }, "Please enter at least three sentences.");
+
+        $("#createBlogForm").validate({
+            rules:{
+                title:{
+                    required:true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                content:{
+                    required:true,
+                    minThreeSentences: true,
+                    minlength: 100,
+                    maxlength: 10000
+                },
+            },
+            submitHandler: function (form, event){
+                event.preventDefault();
+                var token = localStorage.getItem("user_token");
+                if(token){
+                    var entity = Utils.form2json(form);
+                    entity['create_time'] = BlogsService.getCreateTime();
+                    var user = Utils.parseJwt(token);
+                    entity['user_id'] = user.id;
+                    BlogsService.postBlog(entity);
+                }
+                else{
+                    toastr.error("You need to be logged in to post a blog.");
+                }
+
+            }
+        })
+    },
+
+    postBlog: function(entity){
+        RestClient.post(
+            "rest/blogs",
+            entity,
+            function(result){
+                toastr.success("Blog successfully posted!");
+                BlogsService.closeCreateModal();
+                BlogsService.getBlogs();
+                BlogsService.resetForm();
+            }
+        )
+    },
+
+    deleteBlog: function(id, user_id){
+
+    },
+
+    getCreateTime: function(){
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var seconds = String(now.getSeconds()).padStart(2, '0');
+
+        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    },
+
+    resetForm: function(){
+        $("#createBlogForm")[0].reset();
     }
 }
