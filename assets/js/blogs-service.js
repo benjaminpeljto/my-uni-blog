@@ -19,7 +19,7 @@ var BlogsService = {
                         <a class="blog-post" onclick="BlogsService.openBlogDetails(${data[i].id})">
                             <h2 class="post-title">${data[i].title}</h2>
                             <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
-                            <input name="postId" value="${data[i].id}" hidden>
+                            <input id="postId" hidden>
                         </a>
                         <div class="row">
                         <p class="col-11 post-meta">
@@ -33,7 +33,8 @@ var BlogsService = {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
                                     <li><a class="dropdown-item" href="#">Edit</a></li>
-                                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                                    <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
+                                    <li><a class="dropdown-item" href="#">Add to favorites</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -73,27 +74,33 @@ var BlogsService = {
         $("#createBlogModal").modal("hide");
     },
 
-
-
-
-    getFirstSentence: function(text) {
-        const firstSentence = text.match(/(.*?)([.?!])/);
-        if (firstSentence) {
-            return firstSentence[0];
+    openDeleteModal: function(blog_id, writer_id){
+        if(writer_id === BlogsService.getCurrentUserId()) {
+            $("#deleteBlogModal").modal("show");
+            $("#postId").val(blog_id);
         }
-        return '';
+        else{
+            toastr.error("Insufficient Permissions to Delete.")
+        }
     },
 
-    formatDate: function(dateString) {
-        const dateTimeParts = dateString.split(' ');
-        const datePart = dateTimeParts[0];
-        const dateParts = datePart.split('-');
-        const year = dateParts[0];
-        const month = new Date(dateString).toLocaleString('default', { month: 'long' });
-        const day = dateParts[2];
-        const formattedDate = `${month} ${day}, ${year}`;
-        return formattedDate;
+    closeDeleteModal: function() {
+        $("#deleteBlogModal").modal("hide");
     },
+
+
+    deleteBlog: function(){
+        var postId = $("#postId").val();
+        RestClient.delete(
+            "rest/blogs/" + postId,
+            function (result){
+                    toastr.success("Blog no. " + postId + " deleted.")
+                    BlogsService.closeDeleteModal();
+                    BlogsService.getBlogs();
+                }
+        )
+    },
+
 
     createBlog: function (){
         $.validator.addMethod("minThreeSentences", function(value, element) {
@@ -123,7 +130,7 @@ var BlogsService = {
                 var token = localStorage.getItem("user_token");
                 if(token){
                     var entity = Utils.form2json(form);
-                    entity['create_time'] = BlogsService.getCreateTime();
+                    entity['create_time'] = BlogsService.getCurrentDateTime();
                     var user = Utils.parseJwt(token);
                     entity['user_id'] = user.id;
                     BlogsService.postBlog(entity);
@@ -149,11 +156,7 @@ var BlogsService = {
         )
     },
 
-    deleteBlog: function(id, user_id){
-
-    },
-
-    getCreateTime: function(){
+    getCurrentDateTime: function(){
         var now = new Date();
         var year = now.getFullYear();
         var month = String(now.getMonth() + 1).padStart(2, '0');
@@ -167,5 +170,30 @@ var BlogsService = {
 
     resetForm: function(){
         $("#createBlogForm")[0].reset();
+    },
+
+    getFirstSentence: function(text) {
+        const firstSentence = text.match(/(.*?)([.?!])/);
+        if (firstSentence) {
+            return firstSentence[0];
+        }
+        return '';
+    },
+
+    formatDate: function(dateString) {
+        const dateTimeParts = dateString.split(' ');
+        const datePart = dateTimeParts[0];
+        const dateParts = datePart.split('-');
+        const year = dateParts[0];
+        const month = new Date(dateString).toLocaleString('default', { month: 'long' });
+        const day = dateParts[2];
+        const formattedDate = `${month} ${day}, ${year}`;
+        return formattedDate;
+    },
+
+    getCurrentUserId: function(){
+        var token = localStorage.getItem("user_token");
+        var user = Utils.parseJwt(token);
+        return parseInt(user.id);
     }
 }
