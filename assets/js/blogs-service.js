@@ -32,7 +32,7 @@ var BlogsService = {
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                                    <li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
                                     <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
                                     <li><a class="dropdown-item" href="#">Add to favorites</a></li>
                                 </ul>
@@ -71,6 +71,7 @@ var BlogsService = {
     },
 
     closeCreateModal: function(){
+        BlogsService.resetCreateBlogForm();
         $("#createBlogModal").modal("hide");
     },
 
@@ -80,12 +81,30 @@ var BlogsService = {
             $("#postId").val(blog_id);
         }
         else{
-            toastr.error("Insufficient Permissions to Delete.")
+            toastr.error("Insufficient Permissions")
         }
     },
 
     closeDeleteModal: function() {
         $("#deleteBlogModal").modal("hide");
+    },
+
+    openEditModal: function(blog_id, writer_id){
+        if(writer_id === BlogsService.getCurrentUserId()) {
+            RestClient.get(
+                "rest/blog/" + blog_id,
+                function (blog){
+                    $("#createBlogModal").modal("show");
+                    $("#postId").val(blog_id);
+                    $("#create-modal-title").html("Edit Blog")
+                    $("#blog_title").val(blog[0].title);
+                    $("#blog_content").val(blog[0].content);
+                }
+            )
+        }
+        else{
+            toastr.error("Insufficient Permissions")
+        }
     },
 
 
@@ -151,7 +170,7 @@ var BlogsService = {
                 toastr.success("Blog successfully posted!");
                 BlogsService.closeCreateModal();
                 BlogsService.getBlogs();
-                BlogsService.resetForm();
+                BlogsService.resetCreateBlogForm();
             }
         )
     },
@@ -168,7 +187,7 @@ var BlogsService = {
         return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
     },
 
-    resetForm: function(){
+    resetCreateBlogForm: function(){
         $("#createBlogForm")[0].reset();
     },
 
