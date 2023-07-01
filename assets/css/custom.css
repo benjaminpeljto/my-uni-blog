@@ -33,4 +33,8 @@
   color: red;
 }
 
+.dropdown-item {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=custom.css.map */
