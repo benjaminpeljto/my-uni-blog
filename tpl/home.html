@@ -45,6 +45,52 @@
     </div>
 </div>
 
+<!-- Edit post modal -->
+<div class="modal fade" id="editBlogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="editBlogForm">
+                <div class="modal-header">
+                    <h4 id="edit-modal-title" class="modal-title">Edit Blog</h4>
+                </div>
+                <input id="edit_blog_id", name="id" hidden>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit_blog_title">Blog title:</label>
+                        <input
+                                type="text"
+                                id="edit_blog_title"
+                                name="title"
+                                required
+                                class="form-control"
+                                placeholder="Enter blog title"
+                        />
+                    </div>
+                    <div>
+                        <label for="edit_blog_content">Blog content:</label>
+                        <textarea
+                                id="edit_blog_content"
+                                name="content"
+                                rows="15" cols="30"
+                                class="form-control"
+                                placeholder="Enter blog content (minimum 100 words)"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="error"><span></span></div>
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            class="btn btn-default"
+                            onclick="BlogsService.closeEditModal()"
+                    >Close</button>
+                    <button type="submit" class="btn btn-warning">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 

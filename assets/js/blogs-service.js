@@ -4,6 +4,7 @@ var BlogsService = {
     init:function (){
         BlogsService.getBlogs();
         BlogsService.createBlog();
+        BlogsService.editBlog();
     },
 
     getBlogs: function () {
@@ -94,17 +95,76 @@ var BlogsService = {
             RestClient.get(
                 "rest/blog/" + blog_id,
                 function (blog){
-                    $("#createBlogModal").modal("show");
-                    $("#postId").val(blog_id);
-                    $("#create-modal-title").html("Edit Blog")
-                    $("#blog_title").val(blog[0].title);
-                    $("#blog_content").val(blog[0].content);
+                    $("#editBlogModal").modal("show");
+                    $("#edit_blog_id").val(blog_id);
+                    $("#edit_blog_title").val(blog[0].title);
+                    $("#edit_blog_content").val(blog[0].content);
                 }
             )
+            console.log($("#edit_blog_id").val());
         }
         else{
             toastr.error("Insufficient Permissions")
         }
+    },
+
+    closeEditModal: function (){
+        $("#editBlogModal").modal("hide");
+    },
+
+    editBlog: function (){
+        $.validator.addMethod("minThreeSentences", function(value, element) {
+            var sentences = value.split('.');
+            sentences = sentences.filter(function(sentence) {
+                return sentence.trim() !== '';
+            });
+            return sentences.length >= 3;
+        }, "Please enter at least three sentences.");
+
+        $("#editBlogForm").validate({
+            rules:{
+                title:{
+                    required:true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                content:{
+                    required:true,
+                    minThreeSentences: true,
+                    minlength: 100,
+                    maxlength: 10000
+                },
+            },
+            submitHandler: function (form, event){
+                event.preventDefault();
+                var token = localStorage.getItem("user_token");
+                if(token){
+                    var entity = Utils.form2json(form);
+                    entity['create_time'] = BlogsService.getCurrentDateTime();
+                    var user = Utils.parseJwt(token);
+                    entity['user_id'] = user.id;
+                    BlogsService.postEditedBlog(entity);
+                }
+                else{
+                    toastr.error("You need to be logged in to post a blog.");
+                }
+
+            }
+        })
+    },
+
+    postEditedBlog: function(entity){
+        RestClient.put(
+            "rest/blogs/" + entity.id,
+                entity,
+            function (){
+                toastr.info("Blog has been updated");
+                BlogsService.closeEditModal();
+                BlogsService.getBlogs();
+                BlogsService.resetEditBlogForm();
+            }
+        )
+
     },
 
 
@@ -189,6 +249,10 @@ var BlogsService = {
 
     resetCreateBlogForm: function(){
         $("#createBlogForm")[0].reset();
+    },
+
+    resetEditBlogForm: function(){
+        $("#editBlogForm")[0].reset();
     },
 
     getFirstSentence: function(text) {
