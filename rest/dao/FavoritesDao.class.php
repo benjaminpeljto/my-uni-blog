@@ -8,7 +8,7 @@ class FavoritesDao extends BaseDao
      */
     public function __construct()
     {
-        parent::__construct("comments");
+        parent::__construct("favorite_blogs");
     }
 
 
