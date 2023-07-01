@@ -35,7 +35,7 @@ var BlogsService = {
                                 <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
                                     <li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
                                     <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
-                                    <li><a class="dropdown-item" href="#">Add to favorites</a></li>
+                                    <li><a class="dropdown-item" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -111,6 +111,8 @@ var BlogsService = {
     closeEditModal: function (){
         $("#editBlogModal").modal("hide");
     },
+
+
 
     editBlog: function (){
         $.validator.addMethod("minThreeSentences", function(value, element) {
