@@ -82,7 +82,7 @@ var BlogsService = {
     },
 
     openDeleteModal: function(blog_id, writer_id){
-        if(writer_id === BlogsService.getCurrentUserId()) {
+        if(writer_id === Utils.getCurrentUserId()) {
             $("#deleteBlogModal").modal("show");
             $("#postId").val(blog_id);
         }
@@ -96,7 +96,7 @@ var BlogsService = {
     },
 
     openEditModal: function(blog_id, writer_id){
-        if(writer_id === BlogsService.getCurrentUserId()) {
+        if(writer_id === Utils.getCurrentUserId()) {
             RestClient.get(
                 "rest/blog/" + blog_id,
                 function (blog){
@@ -280,10 +280,4 @@ var BlogsService = {
         const formattedDate = `${month} ${day}, ${year}`;
         return formattedDate;
     },
-
-    getCurrentUserId: function(){
-        var token = localStorage.getItem("user_token");
-        var user = Utils.parseJwt(token);
-        return parseInt(user.id);
-    }
 }

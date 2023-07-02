@@ -25,6 +25,12 @@ var Utils = {
         } else {
             return null;
         }
+    },
+
+    getCurrentUserId: function(){
+        var token = localStorage.getItem("user_token");
+        var user = Utils.parseJwt(token);
+        return parseInt(user.id);
     }
 
 }
