@@ -14,4 +14,8 @@ class FavoriteService extends BaseService
         return $this->dao->getFavoritesByUser($user_id);
     }
 
+    public function removeFavorite($wholeBlog){
+        $this->dao->removeFavorite($wholeBlog['blog_id'], $wholeBlog['user_id']);
+    }
+
 }
