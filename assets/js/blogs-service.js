@@ -58,6 +58,11 @@ var BlogsService = {
         var newUrl = urlParts.join("/");
         window.location.href = newUrl;
 
+        window.scrollTo({
+            top: 0,
+            behavior: 'auto'
+        });
+
         $.get('rest/blogwithuser/' + id, function(data) {
             $(".blog-title").html(data[0].title);
             $(".blog-subtitle").html(BlogsService.getFirstSentence(data[0].content));
