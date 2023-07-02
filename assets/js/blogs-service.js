@@ -28,7 +28,7 @@ var BlogsService = {
                             <a id="posted_by_user">${data[i].user}</a>
                             on ${BlogsService.formatDate(data[i].create_time)}
                         </p>
-                        <a id="post-category" class="col-3">${data[i].category}</a>
+                        <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.openCategory(${data[i].category_id})">${data[i].category}</a></p>
                         <div class="col-1 dropdown d-inline">
                                 <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
@@ -53,6 +53,15 @@ var BlogsService = {
 
 
     openBlogDetails: function(id){
+        $.get('rest/blogwithuser/' + id, function(data) {
+            $(".blog-title").html(data[0].title);
+            $(".blog-subtitle").html(BlogsService.getFirstSentence(data[0].content));
+            $(".user").html(data[0].user);
+            $(".date").html(BlogsService.formatDate(data[0].create_time));
+            $("#blog-content").html(data[0].content);
+        });
+
+
         var currentUrl = window.location.href;
         var urlParts = currentUrl.split("/");
         urlParts[urlParts.length - 1] = "#blog";
@@ -64,13 +73,7 @@ var BlogsService = {
             behavior: 'auto'
         });
 
-        $.get('rest/blogwithuser/' + id, function(data) {
-            $(".blog-title").html(data[0].title);
-            $(".blog-subtitle").html(BlogsService.getFirstSentence(data[0].content));
-            $(".user").html(data[0].user);
-            $(".date").html(BlogsService.formatDate(data[0].create_time));
-            $("#blog-content").html(data[0].content);
-        });
+
     },
 
     openCreateModal: function(){
