@@ -4,20 +4,27 @@ var Favorite_blogsService = {
         Favorite_blogsService.getFavoriteBlogs();
     },
 
-    addToFavorites: function(blogId){
-        var userId = Utils.getCurrentUserId();
-        var favoriteEntity = {
-            user_id: "" + userId,
-            blog_id: "" + blogId
-        }
-        RestClient.post(
-            "rest/favoriteblog",
-            favoriteEntity,
-            function (){
-                toastr.success("Added to favorites");
+    addToFavorites: function(blogId) {
+        Favorite_blogsService.isAlreadyFavorite(blogId, function(isFavorite) {
+            if (isFavorite) {
+                toastr.warning("Blog is already in favorites.");
+            } else {
+                var userId = Utils.getCurrentUserId();
+                var favoriteEntity = {
+                    user_id: "" + userId,
+                    blog_id: "" + blogId
+                };
+                RestClient.post(
+                    "rest/favoriteblog",
+                    favoriteEntity,
+                    function() {
+                        toastr.success("Added to favorites");
+                    }
+                );
             }
-        );
+        });
     },
+
 
     getFavoriteBlogs: function (){
         RestClient.get(
@@ -35,7 +42,7 @@ var Favorite_blogsService = {
 
     postNoFavorites: function (){
         $("#favorite-blogs").html(
-`<img src="../img/sad_smiley_face.png" alt="sad smiley face">
+`<img src="assets/img/sad_smiley_face.png" alt="sad smiley face">
                 <h1>No favorite blogs added.</h1>`
         )
     },
@@ -112,6 +119,24 @@ var Favorite_blogsService = {
     },
 
 
+    isAlreadyFavorite: function(blogId, callback) {
+        RestClient.get(
+            "rest/favoriteblogs/" + Utils.getCurrentUserId(),
+            function(data) {
+                if (data.length == 0) {
+                    callback(false);
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].id == blogId) {
+                            callback(true);
+                            return;
+                        }
+                    }
+                    callback(false);
+                }
+            }
+        );
+    }
 
 
 
