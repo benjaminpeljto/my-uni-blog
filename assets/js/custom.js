@@ -38,6 +38,11 @@ $(function() {
     load: "profile.html"
   });
 
+  app.route({
+    view: "category",
+    load: "category.html"
+  });
+
   // run app
   app.run();
 
