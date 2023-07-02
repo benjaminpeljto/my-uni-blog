@@ -43,4 +43,20 @@
   color: #0c4128;
 }
 
+#post-category {
+  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: bold;
+  color: #16451c;
+  font-size: 1rem;
+}
+
+#post-category:hover {
+  cursor: pointer;
+  color: #25ad2b;
+}
+
+.blog-post:hover {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=custom.css.map */
