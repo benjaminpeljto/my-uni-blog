@@ -23,21 +23,20 @@
     </div>
 </div>
 
-<!-- ! THIS NEEDS TO BE CONFIRM REMOVE FROM FAVORITES-->
-<!-- Delete blog modal -->
-<div id="deleteBlogModal" class="modal" tabindex="-1" role="dialog">
+<!-- Remove from favorites modal -->
+<div id="removeFromFavoritesModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Blog</h5>
+                <h5 class="modal-title">Remove from favorites</h5>
             </div>
-            <input id="blog_id" name="blog_id" hidden>
+            <input id="remove_fav_blog_id" name="blog_id" hidden>
             <div class="modal-body">
-                <p>Are you sure you want to delete this blog?</p>
+                <p>Are you sure you want to remove this blog from favorites?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="BlogsService.closeDeleteModal()">Close</button>
-                <button type="button" class="btn btn-danger" onclick="BlogsService.deleteBlog()">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Favorite_blogsService.closeRemoveFromFavModal()">Close</button>
+                <button type="button" class="btn btn-danger" onclick="Favorite_blogsService.removeFavoriteBlog()">Remove</button>
             </div>
         </div>
     </div>
@@ -82,7 +81,5 @@
 </footer>
 
 <script>
-    window.addEventListener('load', function() {
         Favorite_blogsService.init();
-    });
 </script>
