@@ -23,4 +23,11 @@ class FavoritesDao extends BaseDao
         $stmt->execute(['user_id'=>$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function removeFavorite($blog_id, $user_id){
+        $stmt = $this->conn->prepare(
+            "DELETE FROM favorite_blogs WHERE blog_id = :blog_id AND user_id = :user_id;"
+        );
+        $stmt->execute(['blog_id'=>$blog_id,'user_id'=>$user_id]);
+    }
 }
