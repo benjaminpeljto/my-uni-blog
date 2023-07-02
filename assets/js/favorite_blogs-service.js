@@ -56,7 +56,7 @@ var Favorite_blogsService = {
                         <div class="row">
                         <p class="col-11 post-meta">
                             Posted by
-                            <a href="">${data[i].user}</a>
+                            <a id="posted_by_user">${data[i].user}</a>
                             on ${BlogsService.formatDate(data[i].create_time)}
                         </p>
                         <div class="col-1 dropdown d-inline">
@@ -64,7 +64,7 @@ var Favorite_blogsService = {
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                    <li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Remove from favorites</a></li>
+                                    <li><a class="dropdown-item" onclick="Favorite_blogsService.openRemoveFromFavModal(${data[i].id})">Remove from favorites</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -76,8 +76,40 @@ var Favorite_blogsService = {
         }
 
         $("#favorite-blogs").html(blogsHtml);
-    }
+    },
 
+    openRemoveFromFavModal: function (blogId){
+        $("#removeFromFavoritesModal").modal("show");
+        $("#remove_fav_blog_id").val(blogId);
+    },
+
+    closeRemoveFromFavModal: function (){
+        $("#removeFromFavoritesModal").modal("hide");
+    },
+
+    removeFavoriteBlog: function (){
+        var blogId = $("#remove_fav_blog_id").val();
+        var userId = Utils.getCurrentUserId();
+        var entity = {
+            blog_id: "" + blogId,
+            user_id: "" + userId
+        }
+
+        $.ajax({
+            url: "rest/favoriteblog",
+            type: "DELETE",
+            data: JSON.stringify(entity),
+            contentType: "application/json",
+            success: function (response){
+                toastr.info("Blog removed from favorites.")
+                Favorite_blogsService.closeRemoveFromFavModal();
+                Favorite_blogsService.getFavoriteBlogs();
+            },
+            error: function (response){
+                console.log("smth went wrong")
+            }
+        })
+    },
 
 
 
