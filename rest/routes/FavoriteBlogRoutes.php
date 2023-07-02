@@ -9,3 +9,9 @@ Flight::route("POST /favoriteblog", function(){
     $response = Flight::favoriteService()->add($data);
     Flight::json(['message' => 'favorite added', 'Data: ' => $response]);
 });
+
+Flight::route("DELETE /favoriteblog", function (){
+    $data = Flight::request()->data->getData();
+    Flight::favoriteService()->removeFavorite($data);
+    Flight::json(['message'=>'Blog successfully deleted.']);
+});
