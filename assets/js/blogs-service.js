@@ -23,11 +23,12 @@ var BlogsService = {
                             <input id="postId" hidden>
                         </a>
                         <div class="row">
-                        <p class="col-11 post-meta">
+                        <p class="col-8 post-meta">
                             Posted by
                             <a id="posted_by_user">${data[i].user}</a>
                             on ${BlogsService.formatDate(data[i].create_time)}
                         </p>
+                        <a id="post-category" class="col-3">${data[i].category}</a>
                         <div class="col-1 dropdown d-inline">
                                 <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
