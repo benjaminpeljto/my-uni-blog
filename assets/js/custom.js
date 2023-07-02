@@ -33,6 +33,11 @@ $(function() {
     load: "blog.html"
   });
 
+  app.route({
+    view: "profile",
+    load: "profile.html"
+  });
+
   // run app
   app.run();
 
