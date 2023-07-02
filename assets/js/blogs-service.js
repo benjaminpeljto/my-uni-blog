@@ -25,7 +25,7 @@ var BlogsService = {
                         <div class="row">
                         <p class="col-11 post-meta">
                             Posted by
-                            <a href="">${data[i].user}</a>
+                            <a id="posted_by_user">${data[i].user}</a>
                             on ${BlogsService.formatDate(data[i].create_time)}
                         </p>
                         <div class="col-1 dropdown d-inline">
