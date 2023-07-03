@@ -1,5 +1,5 @@
 <!-- Page Header-->
-<header class="masthead" style="background-image: url('assets/img/profile-backround.jpg'); height: 50vh;">
+<header class="masthead" style="background-image: url('assets/img/profile-backround.jpg'); height: 50vh;margin-bottom: 0%;">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -11,55 +11,73 @@
         </div>
     </div>
 </header>
-<!-- Main Content-->
-<div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div id="profile-data" class="col-md-10 col-lg-8 col-xl-7" >
-
-
-            <!-- =================== Here go the posts ==================== -->
-
-        </div>
-    </div>
-</div>
-
-
-<!-- Footer-->
-<footer class="border-top">
+<main style="background-image: url('assets/img/watercolor-texture-background-free-vector.jpg'); background-repeat: no-repeat; background-size: cover;padding-top: 2%;padding-bottom: 2%;">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="paragraphs-container">
+                     <!-- =================== Here go the profile information ==================== -->
+
+                <h2>Profile Information</h2>
+                <ul>
+                    <li><strong><span style="font-weight: normal;">First Name:</span></strong> <strong><span id="profile-first-name" style="font-weight: bold;">Benjamin</span></strong></li>
+                    <li><strong><span style="font-weight: normal;">Last Name:</span></strong> <strong><span id="profile-last-name" style="font-weight: bold;">Peljto</span></strong></li>
+                    <li><strong><span style="font-weight: normal;">Age:</span></strong> <strong><span id="profile-age" style="font-weight: bold;">23</span></strong></li>
+                    <li><strong><span style="font-weight: normal;">Email:</span></strong> <strong><span id="profile-email" style="font-weight: bold;">benjamin.peljto@gmail.com</span></strong></li>
+                </ul>
+                <div class="profile-picture">
+                    <img src="assets/img/user.jpg" alt="Profile Picture">
+                </div>
+                
+        </div>
+    </div>
+</main>
+
+
+
+<footer style="background-image: linear-gradient(to right, rgba(0, 174, 255, 0.332),rgba(16, 120, 154, 0.271),rgba(77, 104, 214, 0.282),rgba(13, 92, 156, 0.359),rgba(0, 0, 255, 0.151)); padding-right: 482px; padding-left: 482px;">
+    <div class="container px-4 px-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
                 <ul class="list-inline text-center">
-                    <li class="list-inline-item">
-                        <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
+                    <li class="list-inline-item" style="padding-right: 10px; padding-left: 10px;">
+                        <a href="https://www.linkedin.com/in/benjamin-peljto/" target="_blank" style="text-decoration: none;">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
+                                <span style="margin-top: 5px;">Benjamin Peljto</span>
+                            </div>
                         </a>
                     </li>
-                    <li class="list-inline-item">
-                        <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                                    </span>
+                    <li class="list-inline-item" style="padding-right: 10px; padding-left: 10px;">
+                        <a href="https://www.linkedin.com/in/dzelila-tinjak-b43b3b276/" target="_blank" style="text-decoration: none;">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
+                                <span style="margin-top: 5px;">Dželila Tinjak</span>
+                            </div>
                         </a>
                     </li>
-                    <li class="list-inline-item">
-                        <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
+                    <li class="list-inline-item" style="padding-right: 10px; padding-left: 10px;">
+                        <a href="https://www.linkedin.com/in/tarik-panjeta/" target="_blank" style="text-decoration: none;">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
+                                <span style="margin-top: 5px;">Tarik Panjeta</span>
+                            </div>
                         </a>
                     </li>
                 </ul>
-                <div class="small text-center text-muted fst-italic">Copyright &copy; MyUniBlog 2023</div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center" style="margin-top: 20px;">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="small text-center text-muted fst-italic">Copyright &copy;
+                Benjamin Peljto, Dželila Tinjak, and Tarik Panjeta 2023
             </div>
         </div>
     </div>
 </footer>
+
+
 
 <script>
         Favorite_blogsService.init();
