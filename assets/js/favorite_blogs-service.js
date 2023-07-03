@@ -55,7 +55,7 @@ var Favorite_blogsService = {
             eachBlog = `
                     <!-- Post preview -->
                     <div class="post-preview">
-                        <a class="blog-post" onclick="BlogsService.openBlogDetails(${data[i].id})">
+                        <a class="blog-post" onclick="BlogsService.putBlogId(${data[i].id}); BlogsService.postBlogDetails()">
                             <h2 class="post-title">${data[i].title}</h2>
                             <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
                             <input id="postId" hidden>
