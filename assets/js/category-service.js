@@ -15,8 +15,13 @@ var CategoryService = {
     },
 
     putCategoryId: function (id){
-        localStorage.setItem("blog_category", "" + id);
-        CategoryService.changeToCategories();
+        if(id == null){
+            toastr.error("Category for this blog is not assigned.")
+        }
+        else {
+            localStorage.setItem("blog_category", "" + id);
+            CategoryService.changeToCategories();
+        }
     },
 
 
