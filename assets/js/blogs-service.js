@@ -28,7 +28,7 @@ var BlogsService = {
                             <a id="posted_by_user">${data[i].user}</a>
                             on ${BlogsService.formatDate(data[i].create_time)}
                         </p>
-                        <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.openCategory(${data[i].category_id})">${data[i].category}</a></p>
+                        <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
                         <div class="col-1 dropdown d-inline">
                                 <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
