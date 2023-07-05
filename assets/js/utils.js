@@ -31,6 +31,12 @@ var Utils = {
         var token = localStorage.getItem("user_token");
         var user = Utils.parseJwt(token);
         return parseInt(user.id);
+    },
+
+    isAdmin: function (){
+        var token = localStorage.getItem("user_token");
+        var user = Utils.parseJwt(token);
+        return user.admin;
     }
 
 }
