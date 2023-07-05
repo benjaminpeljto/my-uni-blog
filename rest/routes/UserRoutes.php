@@ -40,6 +40,17 @@
         if(isset($user['id'])){
             if($user['password'] == md5($login['password'])){
                 unset($user['password']);
+                unset($user['first_name']);
+                unset($user['last_name']);
+                unset($user['email']);
+                unset($user['age']);
+                unset($user['profile_picture']);
+                if($user['admin'] == 1){
+                    $user['admin'] = true;
+                }
+                else{
+                    $user['admin'] = false;
+                }
                 $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
                 Flight::json(['token'=> $jwt]);
             } else{
