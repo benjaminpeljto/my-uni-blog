@@ -209,6 +209,11 @@ var BlogsService = {
             return sentences.length >= 3;
         }, "Please enter at least three sentences.");
 
+        $.validator.addMethod("categorySelected", function(value, element) {
+            return value !== "0";
+        }, "Category needs to be selected");
+
+
         $("#createBlogForm").validate({
             rules:{
                 title:{
@@ -222,6 +227,10 @@ var BlogsService = {
                     minlength: 100,
                     maxlength: 10000
                 },
+                category:{
+                    required: true,
+                    categorySelected:true,
+                }
             },
             submitHandler: function (form, event){
                 event.preventDefault();
@@ -231,6 +240,10 @@ var BlogsService = {
                     entity['create_time'] = BlogsService.getCurrentDateTime();
                     var user = Utils.parseJwt(token);
                     entity['user_id'] = user.id;
+                    if(entity['category_id']=="null"){
+                        delete entity.category_id;
+                    }
+
                     BlogsService.postBlog(entity);
                 }
                 else{
