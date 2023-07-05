@@ -78,16 +78,33 @@
                         <h4 id="create-modal-title" class="modal-title">New blog</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="blog_title">Blog title:</label>
-                            <input
-                                    type="text"
-                                    id="blog_title"
-                                    name="title"
-                                    required
-                                    class="form-control"
-                                    placeholder="Enter blog title"
-                            />
+                        <div class="row">
+                            <div class="form-group col-8">
+                                <label for="blog_title">Blog title:</label>
+                                <input
+                                        type="text"
+                                        id="blog_title"
+                                        name="title"
+                                        required
+                                        class="form-control"
+                                        placeholder="Enter blog title"
+                                />
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-5">
+                                <label for="blog_category">Category:</label>
+                                <select id="blog_category" name="category_id" class="form-control">
+                                    <option value="0" selected>Choose..</option>
+                                    <option value="1">Fashion</option>
+                                    <option value="2">Lifestyle</option>
+                                    <option value="3">Fitness</option>
+                                    <option value="4">Cars</option>
+                                    <option value="5">Music</option>
+                                    <option value="6">Travel</option>
+                                    <option value="7">Sports</option>
+                                    <option value="8">Food</option>
+                                    <option value="null">Else</option>
+                                </select>
+                            </div>
                         </div>
                         <div>
                             <label for="blog_content">Blog content:</label>
