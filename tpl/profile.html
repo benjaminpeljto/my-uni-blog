@@ -15,20 +15,23 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="paragraphs-container">
+                <div class="paragraphs-container row">
                      <!-- =================== Here go the profile information ==================== -->
+                    <div class="col-8">
+                        <h2>Profile Information</h2>
+                        <ul>
+                            <li><strong><span style="font-weight: normal;">First Name:</span></strong> <strong><span id="profile-first-name" style="font-weight: bold;"></span></strong></li>
+                            <li><strong><span style="font-weight: normal;">Last Name:</span></strong> <strong><span id="profile-last-name" style="font-weight: bold;"></span></strong></li>
+                            <li><strong><span style="font-weight: normal;">Age:</span></strong> <strong><span id="profile-age" style="font-weight: bold;"></span></strong></li>
+                            <li><strong><span style="font-weight: normal;">Email:</span></strong> <strong><span id="profile-email" style="font-weight: bold;"></span></strong></li>
+                        </ul>
+                    </div>
 
-                <h2>Profile Information</h2>
-                <ul>
-                    <li><strong><span style="font-weight: normal;">First Name:</span></strong> <strong><span id="profile-first-name" style="font-weight: bold;">Benjamin</span></strong></li>
-                    <li><strong><span style="font-weight: normal;">Last Name:</span></strong> <strong><span id="profile-last-name" style="font-weight: bold;">Peljto</span></strong></li>
-                    <li><strong><span style="font-weight: normal;">Age:</span></strong> <strong><span id="profile-age" style="font-weight: bold;">23</span></strong></li>
-                    <li><strong><span style="font-weight: normal;">Email:</span></strong> <strong><span id="profile-email" style="font-weight: bold;">benjamin.peljto@gmail.com</span></strong></li>
-                </ul>
-                <div class="profile-picture">
-                    <img src="assets/img/user.jpg" alt="Profile Picture">
+                    <div class="profile-picture col-4">
+                        <img src="assets/img/profile_image-removebg.png" alt="Profile Picture">
+                    </div>
                 </div>
-                
+            </div>
         </div>
     </div>
 </main>
@@ -80,5 +83,5 @@
 
 
 <script>
-        Favorite_blogsService.init();
+        ProfileService.init();
 </script>
