@@ -94,7 +94,7 @@ var BlogsService = {
     },
 
     openDeleteModal: function(blog_id, writer_id){
-        if(writer_id === Utils.getCurrentUserId()) {
+        if(writer_id === Utils.getCurrentUserId() || Utils.isAdmin()) {
             $("#deleteBlogModal").modal("show");
             $("#postId").val(blog_id);
         }
@@ -108,7 +108,7 @@ var BlogsService = {
     },
 
     openEditModal: function(blog_id, writer_id){
-        if(writer_id === Utils.getCurrentUserId()) {
+        if(writer_id === Utils.getCurrentUserId() || Utils.isAdmin()) {
             RestClient.get(
                 "rest/blog/" + blog_id,
                 function (blog){
