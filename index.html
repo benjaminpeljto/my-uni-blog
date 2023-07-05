@@ -67,8 +67,7 @@
         <section id="home"></section>
     </main>
 
-
-
+    <input id="toastr_admin" value="false" hidden>
     <!-- Create post modal -->
     <div class="modal fade" id="createBlogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -161,7 +160,9 @@
     <script src="assets/js/rest-client.js"></script>
     <script src="assets/js/favorite_blogs-service.js"></script>
     <script src="assets/js/category-service.js"></script>
+    <script src="assets/js/profile-service.js"></script>
     <script>
+        NavigationBarService.init();
         LoginService.checkLoginStatus();
         BlogsService.init();
     </script>
