@@ -48,7 +48,7 @@ var SignupService = {
             dataType: "json",
             success: function (response){
                 $("#signUpModal").modal("toggle");
-                toastr.success("Signed up successfully!");
+                toastr.success("Signed up successfully!", "", { positionClass: "toast-top-center" });
                 SignupService.resetForm();
             },
             error: function (response){
