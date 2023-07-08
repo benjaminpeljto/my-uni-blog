@@ -40,12 +40,16 @@ var Favorite_blogsService = {
         )
     },
 
-    postNoFavorites: function (){
+    postNoFavorites: function() {
         $("#favorite-blogs").html(
-`<img id="no-favorites-emoji" src="assets/img/sad_smiley-removebg.png" alt="sad smiley face">
-                <h1>No favorite blogs added.</h1>`
-        )
-    },
+          `<div id="no-favorites-container">
+            <div id="sad-smiley-box">
+              <img id="no-favorites-emoji" src="assets/img/sad_smiley-removebg.png" alt="sad smiley face">
+            </div>
+            <h1>No favorite blogs added.</h1>
+          </div>`
+        );
+      },
 
     postFavoriteBlogs: function (data){
         var blogsHtml = "";
