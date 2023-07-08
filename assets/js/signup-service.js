@@ -41,7 +41,7 @@ var SignupService = {
 
     signUp: function(userData){
         $.ajax({
-            url: "rest/users",
+            url: "rest/register",
             type: "POST",
             data: JSON.stringify(userData),
             contentType: "application/json",
