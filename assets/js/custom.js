@@ -43,6 +43,11 @@ $(function() {
     load: "category.html"
   });
 
+  app.route({
+    view: "statistics",
+    load: "statistics.html"
+  });
+
   // run app
   app.run();
 
