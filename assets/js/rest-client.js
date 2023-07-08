@@ -6,8 +6,8 @@ var RestClient = {
             data: JSON.stringify(body),
             contentType: "application/json",
             beforeSend: function(xhr){
-                if (localStorage.getItem("token")){ // pass token for authorized requests
-                    xhr.setRequestHeader('Authentication', localStorage.getItem("token"));
+                if (localStorage.getItem("user_token")){ // pass token for authorized requests
+                    xhr.setRequestHeader('Authentication', localStorage.getItem("user_token"));
                 }
             },
             success: function(data) {
