@@ -34,9 +34,9 @@ var BlogsService = {
                                     <i class="fas fa-ellipsis-v" style="color: black;"></i>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                    <li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
+                                    <li><a class="dropdown-item blog-option-foradmin" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
                                     <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
-                                    <li><a class="dropdown-item" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                                    <li><a class="dropdown-item blog-option-foradmin" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -48,7 +48,14 @@ var BlogsService = {
             }
 
             $("#blogs").html(blogsHtml);
+            BlogsService.hideOptionsForAdmin();
         });
+    },
+
+    hideOptionsForAdmin: function (){
+        if(Utils.isAdmin()){
+            $(".blog-option-foradmin").hide();
+        }
     },
 
     putBlogId: function (id){
@@ -108,7 +115,7 @@ var BlogsService = {
     },
 
     openEditModal: function(blog_id, writer_id){
-        if(writer_id === Utils.getCurrentUserId() || Utils.isAdmin()) {
+        if(writer_id === Utils.getCurrentUserId()) {
             RestClient.get(
                 "rest/blog/" + blog_id,
                 function (blog){
