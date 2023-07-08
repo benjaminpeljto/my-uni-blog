@@ -14,10 +14,12 @@ class BlogsDao extends BaseDao
     public function get_blogs_with_user()
     {
         $stmt = $this->conn->prepare(
-            "SELECT b.id, b.title, b.content, b.create_time, CONCAT(u.first_name, ' ', u.last_name) as 'user', b.user_id, b.category_id, IF(c.category_name IS NULL, 'Else', c.category_name) as category
+            "SELECT b.id, b.title, b.content, b.create_time, CONCAT(u.first_name, ' ', u.last_name) AS 'user', b.user_id, b.category_id, IF(c.category_name IS NULL, 'Else', c.category_name) AS category
                     FROM blogs b 
                     JOIN users u ON b.user_id = u.id
                     LEFT JOIN category c ON b.category_id = c.id
+                    LEFT JOIN featured_blogs fb ON b.id = fb.blog_id
+                    WHERE fb.blog_id IS NULL
                     ORDER BY b.create_time DESC;"
         );
         $stmt->execute();
