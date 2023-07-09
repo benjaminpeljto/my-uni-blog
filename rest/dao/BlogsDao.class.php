@@ -35,9 +35,11 @@ class BlogsDao extends BaseDao
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function get_writer_by_blog_id($id){
+    public function get_number_of_blogs() {
         $stmt = $this->conn->prepare(
-
+            "SELECT COUNT(b.id) as numberOfBlogs FROM blogs b;"
         );
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['numberOfBlogs'];
     }
 }
