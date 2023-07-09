@@ -19,4 +19,7 @@ class BlogService extends BaseService
         return $this->dao->get_blog_with_user_by_id($id);
     }
 
+    public function get_number_of_blogs(){
+        return $this->dao->get_number_of_blogs();
+    }
 }
