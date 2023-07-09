@@ -14,6 +14,19 @@ Flight::route("GET /blogs", function () {
 
 
 /**
+ * @OA\Get(path="/numberofblogs", tags={"Blogs"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Number of blogs (admin panel)",
+ *         @OA\Response( response=200, description="Fetched the number")
+ * )
+ */
+Flight::route("GET /numberofblogs", function (){
+    Flight::json(Flight::blogService()->get_number_of_blogs());
+});
+
+
+
+
+/**
  * @OA\Get(path="/blogswithuser", tags={"Blogs"}, security={{"ApiKeyAuth": {}}},
  *         summary="Return all blogs with writer data.",
  *         @OA\Response( response=200, description="List of blogs with writer data")
