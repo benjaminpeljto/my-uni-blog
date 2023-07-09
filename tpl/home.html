@@ -14,6 +14,12 @@
 <!-- Main Content-->
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="text-center">
+            <div class="btn-group" role="group" aria-label="Button Group">
+                <button type="button" class="btn btn-secondary active" id="btnAll" onclick="BlogsService.getAllBlogs()">All</button>
+                <button type="button" class="btn btn-secondary" id="btnFeatured" onclick="FeaturedService.getFeaturedBlogs()">Featured</button>
+            </div>
+        </div>
         <div id="blogs" class="col-md-10 col-lg-8 col-xl-7" >
 
             <div class="d-flex justify-content-center">
@@ -21,11 +27,11 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-<!-- =================== Here go the posts ==================== -->
-
+            <!-- ==== Here go the posts ===== -->
         </div>
     </div>
 </div>
+
 
 
 <!-- Delete blog modal -->

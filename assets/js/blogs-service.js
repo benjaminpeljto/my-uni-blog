@@ -2,59 +2,68 @@
 var BlogsService = {
 
     init:function (){
-        BlogsService.getBlogs();
+        FeaturedService.getFeaturedBlogs();
         BlogsService.createBlog();
         BlogsService.editBlog();
     },
 
-    getBlogs: function () {
-        $.get('rest/blogswithuser', function (data) {
-
-            var blogsHtml = "";
-
-            for (var i = 0; i < data.length; i++) {
-                var eachBlog = "";
-                eachBlog = `
-                    <!-- Post preview -->
-                    <div class="post-preview">
-                        <a class="blog-post" onclick="BlogsService.putBlogId(${data[i].id}); BlogsService.postBlogDetails()">
-                            <h2 class="post-title">${data[i].title}</h2>
-                            <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
-                            <input id="postId" hidden>
-                        </a>
-                        <div class="row">
-                        <p class="col-8 post-meta">
-                            Posted by
-                            <a id="posted_by_user">${data[i].user}</a>
-                            on ${BlogsService.formatDate(data[i].create_time)}
-                        </p>
-                        <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
-                        <div class="col-1 dropdown d-inline">
-                                <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v" style="color: black;"></i>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                    <li><a class="dropdown-item blog-option-foradmin" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
-                                    <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
-                                    <li><a class="dropdown-item blog-option-foradmin" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
-                                </ul>
+    getAllBlogs: function (){
+        $("#btnAll").addClass("active");
+        $("#btnFeatured").removeClass("active");
+        RestClient.get(
+            "rest/blogswithuser",
+            function (data) {
+                var blogsHtml = "";
+                for (var i = 0; i < data.length; i++) {
+                    var eachBlog = "";
+                    eachBlog = `
+                        <!-- Post preview -->
+                        <div class="post-preview">
+                            <a class="blog-post" onclick="BlogsService.putBlogId(${data[i].id}); BlogsService.postBlogDetails()">
+                                <h2 class="post-title">${data[i].title}</h2>
+                                <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
+                                <input id="postId" hidden>
+                            </a>
+                            <div class="row">
+                            <p class="col-8 post-meta">
+                                Posted by
+                                <a id="posted_by_user">${data[i].user}</a>
+                                on ${BlogsService.formatDate(data[i].create_time)}
+                            </p>
+                            <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
+                            <div class="col-1 dropdown d-inline">
+                                    <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v" style="color: black;"></i>
+                                    </a>
+                                    <ul id = "blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
+                                        <li><a class="dropdown-item admin-hide" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
+                                        <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
+                                        <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                                        <li><a class="dropdown-item user-hide" onclick="FeaturedService.addToFeatured(${data[i].id})">Feature</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Divider -->
-                    <hr class="my-4" />`;
+                        <!-- Divider -->
+                        <hr class="my-4" />`;
 
                     blogsHtml += eachBlog;
+                }
+
+                $("#blogs").html(blogsHtml);
+                BlogsService.optionsForAdmin();
             }
 
-            $("#blogs").html(blogsHtml);
-            BlogsService.hideOptionsForAdmin();
-        });
+        )
     },
 
-    hideOptionsForAdmin: function (){
+
+    optionsForAdmin: function (){
         if(Utils.isAdmin()){
-            $(".blog-option-foradmin").hide();
+            $(".admin-hide").hide();
+        }
+        else{
+            $(".user-hide").hide();
         }
     },
 
@@ -186,7 +195,7 @@ var BlogsService = {
             function (){
                 toastr.info("Blog has been updated");
                 BlogsService.closeEditModal();
-                BlogsService.getBlogs();
+                BlogsService.getAllBlogs();
                 BlogsService.resetEditBlogForm();
             }
         )
@@ -201,7 +210,7 @@ var BlogsService = {
             function (result){
                     toastr.success("Blog no. " + postId + " deleted.")
                     BlogsService.closeDeleteModal();
-                    BlogsService.getBlogs();
+                    BlogsService.getAllBlogs();
                 }
         )
     },
