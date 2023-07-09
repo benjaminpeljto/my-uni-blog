@@ -57,6 +57,23 @@
     });
 
 
+
+
+
+/**
+ * @OA\Get(path="/numberofusers", tags={"Users"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Number of users (admin panel)",
+ *         @OA\Response( response=200, description="Fetched the number.")
+ * )
+ */
+    Flight::route("GET /numberofusers",function (){
+        Flight::json(Flight::userService()->get_number_of_users());
+    });
+
+
+
+
+
 /**
  * @OA\Post(path="/users", tags={"Users"}, description="Add a new user", security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(required=true, description="New user details",
