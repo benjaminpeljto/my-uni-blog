@@ -18,8 +18,6 @@ class BlogsDao extends BaseDao
                     FROM blogs b 
                     JOIN users u ON b.user_id = u.id
                     LEFT JOIN category c ON b.category_id = c.id
-                    LEFT JOIN featured_blogs fb ON b.id = fb.blog_id
-                    WHERE fb.blog_id IS NULL
                     ORDER BY b.create_time DESC;"
         );
         $stmt->execute();
