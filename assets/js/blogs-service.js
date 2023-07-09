@@ -2,12 +2,14 @@
 var BlogsService = {
 
     init:function (){
-        BlogsService.getBlogs();
+        FeaturedService.getFeaturedBlogs();
         BlogsService.createBlog();
         BlogsService.editBlog();
     },
 
-    getBlogs: function () {
+    getAllBlogs: function (){
+        $("#btnAll").addClass("active");
+        $("#btnFeatured").removeClass("active");
         RestClient.get(
             "rest/blogswithuser",
             function (data) {
@@ -33,10 +35,11 @@ var BlogsService = {
                                     <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v" style="color: black;"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                        <li><a class="dropdown-item blog-option-foradmin" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
+                                    <ul id = "blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
+                                        <li><a class="dropdown-item admin-hide" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
                                         <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
-                                        <li><a class="dropdown-item blog-option-foradmin" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                                        <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                                        <li><a class="dropdown-item user-hide" onclick="FeaturedService.addToFeatured(${data[i].id})">Feature</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -48,15 +51,19 @@ var BlogsService = {
                 }
 
                 $("#blogs").html(blogsHtml);
-                BlogsService.hideOptionsForAdmin();
-            },
+                BlogsService.optionsForAdmin();
+            }
 
         )
     },
 
-    hideOptionsForAdmin: function (){
+
+    optionsForAdmin: function (){
         if(Utils.isAdmin()){
-            $(".blog-option-foradmin").hide();
+            $(".admin-hide").hide();
+        }
+        else{
+            $(".user-hide").hide();
         }
     },
 
@@ -188,7 +195,7 @@ var BlogsService = {
             function (){
                 toastr.info("Blog has been updated");
                 BlogsService.closeEditModal();
-                BlogsService.getBlogs();
+                BlogsService.getAllBlogs();
                 BlogsService.resetEditBlogForm();
             }
         )
@@ -203,7 +210,7 @@ var BlogsService = {
             function (result){
                     toastr.success("Blog no. " + postId + " deleted.")
                     BlogsService.closeDeleteModal();
-                    BlogsService.getBlogs();
+                    BlogsService.getAllBlogs();
                 }
         )
     },
