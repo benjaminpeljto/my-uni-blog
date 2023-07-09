@@ -18,7 +18,7 @@ var NavigationBarService = {
         }
         const nav_admin = "" +
             "                    <li class=\"nav-item\"><a class=\"nav-link px-lg-3 py-3 py-lg-4\" href=\"#home\">Home</a></li>\n" +
-            "                    <li class=\"nav-item\"><a class=\"nav-link px-lg-3 py-3 py-lg-4\" href=\"#statistics\">Statistics</a></li>\n" +
+            "                    <li class=\"nav-item\"><a class=\"nav-link px-lg-3 py-3 py-lg-4\" onclick=\"StatsService.init()\" href=\"#statistics\">Statistics</a></li>\n" +
             "                    <li class=\"nav-item\"><a class=\"nav-link px-lg-3 py-3 py-lg-4\" onclick=\"ProfileService.init()\" href=\"#profile\">Profile</a></li>\n" +
             "                    <li class=\"nav-item\"><a class=\"nav-link px-lg-3 py-3 py-lg-4\" onclick=\"LoginService.logout()\">Log Out</a></li>";
 
