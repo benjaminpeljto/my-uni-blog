@@ -19,6 +19,10 @@ class UserService extends BaseService{
         parent::add($entity);
     }
 
+    function get_number_of_users(){
+        return $this->dao->get_number_of_users();
+    }
+
     
 }
 ?>

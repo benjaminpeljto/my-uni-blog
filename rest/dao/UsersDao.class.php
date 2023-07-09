@@ -19,6 +19,14 @@ class UsersDao extends BaseDao{
         return reset($array);
     }
 
+    public function get_number_of_users(){
+        $stmt = $this->conn->prepare(
+            "SELECT COUNT(u.id) as numberOfUsers FROM users u;"
+        );
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['numberOfUsers'];
+
+    }
 
 
 
