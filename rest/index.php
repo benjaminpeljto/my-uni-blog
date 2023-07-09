@@ -18,7 +18,7 @@ Flight::register('favoriteService', "FavoriteService");
 Flight::register('categoryService', "CategoryService");
 
 // middleware
-/*Flight::route('/*', function(){
+Flight::route('/*', function(){
     //perform JWT decode
     $path = Flight::request()->url;
     if ($path == '/login' || $path =='/register' || $path == '/docs.json') return TRUE;
@@ -38,7 +38,8 @@ Flight::register('categoryService', "CategoryService");
             return FALSE;
         }
     }
-});*/
+});
+
 
 // import routes
 require_once __DIR__ . '/routes/UserRoutes.php';
@@ -50,6 +51,13 @@ require_once __DIR__ . '/routes/CategoryRoutes.php';
 //custom routes here
 Flight::route("GET /", function () {
     echo "Start page";
+});
+
+/* REST API documentation endpoint */
+Flight::route('GET /docs.json', function(){
+    $openapi = \OpenApi\scan('routes');
+    header('Content-Type: application/json');
+    echo $openapi->toJson();
 });
 
 
