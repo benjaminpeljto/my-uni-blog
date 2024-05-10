@@ -1,7 +1,7 @@
 # Web-Programming2023_Blog
 Mandatory project for "Introduction to Web Development" course on International Burch University.
 
-Made by: @benjaminpeljto & @Tarik-7
+Made by: @benjaminpeljto, @Tarik-7 & @emirkugic
 
 Instructions for running the app on a device:
 
