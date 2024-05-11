@@ -65,9 +65,9 @@ To run this application locally, follow these steps:
    ```
    update /rest/Config.class.php with mysql credentials
    ```
-6. Access the application in your web browser.
+6. To access the application in your web browser visit:
    ```
-   go to http://localhost/my-uni-blog2024/index.html to see the full website
+   http://localhost/my-uni-blog2024/index.html
    ```
 
 
