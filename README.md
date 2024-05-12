@@ -1,73 +1,48 @@
-# Web-Programming2023_Blog
+# MyUniBlog
 
-Mandatory project for "Introduction to Web Development" course on International Burch University.
+This repository contains the mandatory project for the "Introduction to Web Development" course, which has been extended for use in the "Software Engineering" course at International Burch University.
 
-Made by: @benjaminpeljto, @Tarik-7 & @emirkugic
+## Project Description
 
-Instructions for running the app on a device:
+The project is a dynamic blog application that I initially developed over four months in 2023 and later extended and upgraded in 2024. Although it serves as an educational example in the context of my coursework, it's mainly a team project where we've been improving web development skills and applying software engineering principles practically.
 
-1. Create config.php file in "Web-Programming2023_Blog/rest" and write the following in it:
+## Tech stack
+* MySQL
+* PHP (w/ FlightPHP)
+* HTML
+* CSS
+* JS (w/ additional libraries)
 
-```hack
-<?php
+## Installation
+### Prerequisites
+* PHP Server Environment (XAMP, MAMP, WAMP, or equivalent)
+* MySQL Database
+* Composer as a DMT
 
-class Config{
-
-    public static $host = 'localhost';
-    public static $database = 'database_name';
-    public static $username = 'connection_username';
-    public static $password = 'connection_password';
-    public static $port = '3306';
-}
-
-?>
-```
-
-2. If error 404, change the .htaccess file code to the following:
-
-```ApacheConf
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
-```
-
-But for me, I need to add this route in order to work (ofcourse this just works for me)
-
-```ApacheConf
-RewriteEngine On
-RewriteBase /web-Programming2023_Blog/rest/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
-```
-
-3.
-
-## Getting Started
-
-To run this application locally, follow these steps:
-
-1. Clone this repository to your local machine.
+### Setup instructions
+1. Clone the Repository
    ```
    git clone https://github.com/benjaminpeljto/my-uni-blog2024.git
    ```
-2. Install the dependencies.
-   ```
-   composer install
-   ```
-3. Ensure you have WAMP or XAMPP installed on your machine.
-4. Run the database script to create and populate the database.
-   ```
-   run database.sql script in DBMS
-   ```
-5. Update your MySQL credentials.
-   ```
-   update /rest/Config.class.php with mysql credentials
-   ```
-6. To access the application in your web browser visit:
-   ```
-   http://localhost/my-uni-blog2024/index.html
-   ```
-
-
+2. Install Dependencies
+```
+composer install
+```
+3. Database Configuration
+Create a new empty database and run the provided .sql script in your DBMT in order to populate the newly created database.
+4. Configure the Application
+* Navigate to `my-uni-blog/rest`
+* In `Config.class.php` file add in each function's return statement as second parameter the database connection detail.
+* Modify `.htaccess` for your environment if encountering a 404 error:
+```
+RewriteEngine On
+RewriteBase /my-uni-blog/rest/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+```
+5. Run the application
+Access the application by navigating to the following location in the desired browser:
+```
+http://localhost/my-uni-blog/index.html
+```
