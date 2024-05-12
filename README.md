@@ -4,7 +4,7 @@ This repository contains the mandatory project for the "Introduction to Web Deve
 
 ## Project Description
 
-The project is a dynamic blog application that I initially developed over four months in 2023 and later extended and upgraded in 2024. Although it serves as an educational example in the context of my coursework, it's mainly a team project where we've been improving web development skills and applying software engineering principles practically.
+The project is a dynamic blog application that was initially developed over four months in 2023 and later extended and upgraded in 2024. Although it serves as an educational example in the context of my coursework, it's mainly a team project where we've been improving web development skills and applying software engineering principles practically.
 
 ## Tech stack
 * MySQL
