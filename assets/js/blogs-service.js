@@ -7,45 +7,60 @@ var BlogsService = {
         BlogsService.editBlog();
     },
 
-    getAllBlogs: function (){
+    getAllBlogs: function () {
         $("#btnAll").addClass("active");
         $("#btnFeatured").removeClass("active");
+        let currentUserId = Utils.getCurrentUserId();
         RestClient.get(
-            "rest/blogswithuser",
+            "rest/blogswithuser/" + currentUserId,
             function (data) {
                 var blogsHtml = "";
                 for (var i = 0; i < data.length; i++) {
-                    var eachBlog = "";
-                    eachBlog = `
-                        <!-- Post preview -->
-                        <div class="post-preview">
-                            <a class="blog-post" onclick="BlogsService.putBlogId(${data[i].id}); BlogsService.postBlogDetails()">
-                                <h2 class="post-title">${data[i].title}</h2>
-                                <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
-                                <input id="postId" hidden>
-                            </a>
-                            <div class="row">
-                            <p class="col-8 post-meta">
-                                Posted by
-                                <a id="posted_by_user">${data[i].user}</a>
-                                on ${BlogsService.formatDate(data[i].create_time)}
+                    var editBlogOption = "";
+                    var deleteBlogOption = "";
+                    if (data[i].user_id === currentUserId || Utils.isAdmin()) {
+                        editBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>`;
+                        deleteBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>`;
+                    }
+
+                    var likeButtonClass = data[i].liked_by_user ? "liked" : "not-liked";
+
+                    var eachBlog = `
+                <!-- Post preview -->
+                <div class="post-preview position-relative mb-4" id="blog-${data[i].id}">
+                    <a class="blog-post" onclick="BlogsService.putBlogId(${data[i].id}); BlogsService.postBlogDetails()">
+                        <h2 class="post-title">${data[i].title}</h2>
+                        <h3 class="post-subtitle">${BlogsService.getFirstSentence(data[i].content)}</h3>
+                        <input id="postId" hidden>
+                    </a>
+                    <div class="dropdown position-absolute top-0 end-0 mt-2 me-2">
+                        <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v" style="color: black;"></i>
+                        </a>
+                        <ul id="blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
+                            ${editBlogOption}
+                            ${deleteBlogOption}
+                            <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                            <li><a class="dropdown-item user-hide" onclick="FeaturedService.addToFeatured(${data[i].id})">Feature</a></li>
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <img src="${data[i].profile_picture}" alt="${data[i].user}'s profile image" class="img-thumbnail profile-img">
+                            <p class="post-meta mb-0">
+                                <a id="posted_by_user">${data[i].user}</a> on ${BlogsService.formatDate(data[i].create_time)}
                             </p>
-                            <p class="col-3 post-meta">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
-                            <div class="col-1 dropdown d-inline">
-                                    <a class="dropdown-toggle" href="#" style="color: black;" role="button" id="postOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v" style="color: black;"></i>
-                                    </a>
-                                    <ul id = "blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                        <li><a class="dropdown-item admin-hide" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
-                                        <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
-                                        <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
-                                        <li><a class="dropdown-item user-hide" onclick="FeaturedService.addToFeatured(${data[i].id})">Feature</a></li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
-                        <!-- Divider -->
-                        <hr class="my-4" />`;
+                        <div class="d-flex align-items-center">
+                            <p class="post-meta mb-0">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
+                            <button class="btn btn-link ms-3 like-button ${likeButtonClass}" onclick="BlogsService.toggleLike(${data[i].id})">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Divider -->
+                <hr class="mb-4 mt-1" />`;
 
                     blogsHtml += eachBlog;
                 }
@@ -53,9 +68,10 @@ var BlogsService = {
                 $("#blogs").html(blogsHtml);
                 BlogsService.optionsForAdmin();
             }
-
-        )
+        );
     },
+
+
 
 
     optionsForAdmin: function (){
@@ -320,5 +336,27 @@ var BlogsService = {
         const day = dateParts[2];
         const formattedDate = `${month} ${day}, ${year}`;
         return formattedDate;
+    },
+
+    toggleLike: function(blogId){
+        const likeButton = $(`#blog-${blogId} .like-button`); // Use an ID to find the specific blog post's like button
+        RestClient.post(
+            "rest/like/" + blogId + "/" + Utils.getCurrentUserId(),
+            null,
+            function (response){
+                if(!response.success){
+                    toastr.error(response.message);
+                }
+                else{
+                    toastr.success(response.message);
+                    // Toggle the like button state
+                    if (likeButton.hasClass("liked")) {
+                        likeButton.removeClass("liked").addClass("not-liked");
+                    } else {
+                        likeButton.removeClass("not-liked").addClass("liked");
+                    }
+                }
+            }
+        )
     },
 }
