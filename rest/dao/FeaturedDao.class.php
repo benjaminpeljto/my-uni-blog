@@ -14,7 +14,7 @@ class FeaturedDao extends BaseDao
 
     public function get_featured_blogs_with_user(){
         $stmt = $this->conn->prepare(
-            "SELECT b.id, b.title, b.content, b.create_time, CONCAT(u.first_name, ' ', u.last_name) as 'user', b.user_id, b.category_id, IF(c.category_name IS NULL, 'Else', c.category_name) as category
+            "SELECT b.id, b.title, b.content, b.create_time, CONCAT(u.first_name, ' ', u.last_name) as 'user', b.user_id, u.profile_picture, b.category_id, IF(c.category_name IS NULL, 'Else', c.category_name) as category
                     FROM blogs b 
                     JOIN users u ON b.user_id = u.id
                     LEFT JOIN category c ON b.category_id = c.id
