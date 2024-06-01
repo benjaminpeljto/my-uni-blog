@@ -37,6 +37,12 @@ var Utils = {
         var token = localStorage.getItem("user_token");
         var user = Utils.parseJwt(token);
         return user.admin;
+    },
+
+    getProfilePicture: function(){
+        var token = localStorage.getItem("user_token");
+        var user = Utils.parseJwt(token);
+        return user.profile_picture;
     }
 
 }
