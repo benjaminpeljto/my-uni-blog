@@ -1,3 +1,54 @@
+/* Profile image */
+.profile-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Post meta styles */
+.post-meta {
+  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+}
+
+/* Category link styles */
+#post-category {
+  font-weight: bold;
+  color: #16451c;
+}
+
+#post-category:hover {
+  color: #25ad2b;
+  cursor: pointer;
+}
+
+/* Like button styles */
+.like-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.like-button.liked .fa-thumbs-up {
+  color: #007bff;
+}
+
+.like-button.not-liked .fa-thumbs-up {
+  color: #ccc;
+}
+
+/* Dropdown menu styles */
+.dropdown {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+/* General styles */
 .post-preview a {
   text-decoration: none;
 }
@@ -6,13 +57,11 @@
   font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1.25rem;
   line-height: 1.5;
+  margin-bottom: 2rem; /* Add bottom margin to create space before the footer */
+  word-wrap: break-word; /* Ensure long words break properly */
 }
 
-.createbuttonnavlink:hover {
-  cursor: pointer;
-}
-
-.nav-item:hover {
+.createbuttonnavlink:hover, .nav-item:hover, .dropdown-item {
   cursor: pointer;
 }
 
@@ -33,38 +82,12 @@
   color: red;
 }
 
-.dropdown-item {
-  cursor: pointer;
-}
-
-#posted_by_user {
-  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: bold;
-  color: #0c4128;
-}
-
-#post-category {
-  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-weight: bold;
-  color: #16451c;
-  font-size: 1rem;
-}
-
-#post-category:hover {
-  cursor: pointer;
-  color: #25ad2b;
-}
-
-.blog-post:hover {
-  cursor: pointer;
-}
-
 #no-favorites-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 0%;
+  margin-top: 0;
   padding: 0;
   border: none;
 }
@@ -76,7 +99,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   padding: 0;
   border: none;
 }
@@ -87,9 +110,36 @@
 }
 
 #no-favorites-container h1 {
-  margin-top: 0px;
+  margin-top: 0;
   padding: 0;
   border: none;
 }
 
-/*# sourceMappingURL=custom.css.map */
+#profile-profile-image {
+  border-radius: 50%;
+  border: 2px solid #0077B5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* Ensure the body and html take full height */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Footer styles */
+footer {
+  background-image: linear-gradient(to right, rgba(0, 174, 255, 0.332), rgba(16, 120, 154, 0.271), rgba(77, 104, 214, 0.282), rgba(13, 92, 156, 0.359), rgba(0, 0, 255, 0.151));
+  padding: 2rem 0; /* Adjust the padding for the footer */
+  width: 100%;
+}
+
+#blogs {
+  margin-bottom: 2rem; /* Adjust the margin as needed */
+}
