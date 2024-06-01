@@ -10,12 +10,16 @@ require_once __DIR__ . '/services/BlogService.php';
 require_once __DIR__ . '/services/FeaturedService.php';
 require_once __DIR__ . '/services/FavoriteService.php';
 require_once __DIR__ . '/services/CategoryService.php';
+require_once __DIR__ . '/services/ImgurService.php';
+require_once __DIR__ . '/services/LikeService.php';
 
 Flight::register('userService', "UserService");
 Flight::register('blogService', "BlogService");
 Flight::register('featuredService', "FeaturedService");
 Flight::register('favoriteService', "FavoriteService");
 Flight::register('categoryService', "CategoryService");
+Flight::register('imgurService', "ImgurService");
+Flight::register('likeService', "LikeService");
 
 // middleware
 Flight::route('/*', function(){
@@ -34,7 +38,7 @@ Flight::route('/*', function(){
             Flight::set('user', $decoded);
             return TRUE;
         } catch (\Exception $e) {
-            Flight::json(["message" => "Authorization token is not valid"], 403);
+            Flight::json(["message" => "Authorization token is not valid", "jwt_error"=>$e->getMessage()], 403);
             return FALSE;
         }
     }
@@ -47,6 +51,7 @@ require_once __DIR__ . '/routes/BlogRoutes.php';
 require_once __DIR__ . '/routes/FeaturedBlogRoutes.php';
 require_once __DIR__ . '/routes/FavoriteBlogRoutes.php';
 require_once __DIR__ . '/routes/CategoryRoutes.php';
+require_once __DIR__ . '/routes/LikeRoutes.php';
 
 //custom routes here
 Flight::route("GET /", function () {
