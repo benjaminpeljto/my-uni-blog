@@ -36,6 +36,10 @@ Flight::route("GET /blogswithuser", function () {
     Flight::json(Flight::blogService()->get_blogs_with_user());
 });
 
+Flight::route("GET /blogswithuser/@user_id", function ($user_id){
+    Flight::json(Flight::blogService()->get_blogs_with_user_for_user($user_id));
+});
+
 
 
 
