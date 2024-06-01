@@ -28,6 +28,14 @@ class UsersDao extends BaseDao{
 
     }
 
+    public function update_profile_image($user_id, $image_url, $image_delete_hash) {
+        $stmt = $this->conn->prepare(
+            "UPDATE users SET profile_picture = :profile_picture_url, profile_picture_delete_hash = :profile_picture_delete_hash WHERE id = :user_id;"
+        );
+        return $stmt->execute(['user_id' => $user_id, 'profile_picture_url' => $image_url, 'profile_picture_delete_hash' => $image_delete_hash]);
+    }
+
+
 
 
     /*
