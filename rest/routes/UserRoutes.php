@@ -28,6 +28,17 @@
     });
 
 
+    Flight::route("GET /profile/@id", function($id){
+        Flight::json(Flight::userService()->get_profile_info($id));
+    });
+
+    Flight::route("POST /profile/image-change/@userid", function($userid){
+        $image = Flight::request()->files->getData()['image'];
+        Flight::userService()->update_profile_picture($userid, $image);
+    });
+
+
+
 
 
 /**
@@ -169,9 +180,7 @@
                 unset($user['password']);
                 unset($user['first_name']);
                 unset($user['last_name']);
-                unset($user['email']);
                 unset($user['age']);
-                unset($user['profile_picture']);
                 if($user['admin'] == 1){
                     $user['admin'] = true;
                 }
