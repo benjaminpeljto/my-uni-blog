@@ -15,12 +15,12 @@ class Config
 
     public static function DB_USERNAME()
     {
-        return Config::get_env('DB_USERNAME', 'root');
+        return Config::get_env('DB_USERNAME', 'web_project_user');
     }
 
     public static function DB_PASSWORD()
     {
-        return Config::get_env('DB_PASSWORD', '');
+        return Config::get_env('DB_PASSWORD', '71000Sarajevo');
     }
 
     public static function DB_PORT()
@@ -31,6 +31,11 @@ class Config
     public static function JWT_SECRET()
     {
         return Config::get_env('JWT_SECRET', 'benjamin');
+    }
+
+    public static function IMGUR_CLIENT_ID()
+    {
+        return Config::get_env('IMGUR_CLIENT_ID', '350cf882ac77ef1');
     }
 
     public static function get_env($name, $default)
