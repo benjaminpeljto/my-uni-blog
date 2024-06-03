@@ -32,7 +32,7 @@
 }
 
 .like-button.liked .fa-thumbs-up {
-  color: #007bff;
+  color: #29a0ee;
 }
 
 .like-button.not-liked .fa-thumbs-up {
@@ -142,4 +142,16 @@ footer {
 
 #blogs {
   margin-bottom: 2rem; /* Adjust the margin as needed */
+  margin-top: -5rem;
+}
+
+@media screen and (max-width: 992px) {
+  #blogs{
+    margin-top: 0rem;
+  }
+}
+
+.post-preview.position-relative.mb-4:hover h2,
+.post-preview.position-relative.mb-4:hover h3 {
+  cursor: pointer;
 }
