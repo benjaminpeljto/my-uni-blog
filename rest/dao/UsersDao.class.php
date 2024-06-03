@@ -35,6 +35,45 @@ class UsersDao extends BaseDao{
         return $stmt->execute(['user_id' => $user_id, 'profile_picture_url' => $image_url, 'profile_picture_delete_hash' => $image_delete_hash]);
     }
 
+    public function get_users_for_admin(){
+        $stmt = $this->conn->prepare(
+            "SELECT u.id, 
+                       CONCAT(u.first_name, ' ', u.last_name) AS 'user',
+                       IF(u.banned, true, false) as 'banned',
+                       COUNT(DISTINCT b.id) AS 'total_blogs',
+                       COALESCE(SUM(b.likes_count), 0) AS 'total_likes'
+                FROM users u
+                LEFT JOIN (
+                    SELECT b.id, b.user_id, COUNT(l.id) AS likes_count
+                    FROM blogs b
+                    LEFT JOIN likes l ON b.id = l.blog_id
+                    GROUP BY b.id, b.user_id
+                ) b ON u.id = b.user_id
+                WHERE u.admin = 0
+                GROUP BY u.id
+                ORDER BY total_blogs DESC, total_likes DESC;"
+        );
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function ban_user($user_id){
+        $stmt = $this->conn->prepare(
+            "UPDATE users SET banned = true WHERE id = :user_id;"
+        );
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->rowCount();
+    }
+
+    public function unban_user($user_id){
+        $stmt = $this->conn->prepare(
+            "UPDATE users SET banned = false WHERE id = :user_id;"
+        );
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->rowCount();
+    }
+
+
 
 
 
