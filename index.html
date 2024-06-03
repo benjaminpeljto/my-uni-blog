@@ -44,6 +44,7 @@
         <section id="contact"></section>
         <section id="blog"></section>
         <section id="favorites"></section>
+        <section id="myblogs"></section>
         <section id="profile"></section>
         <section id="category"></section>
         <section id="statistics"></section>
@@ -51,7 +52,7 @@
     </main>
 </div>
 <!-- Footer -->
-<footer>
+<!--<footer>
     <div class="container px-4 px-lg-5">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -79,7 +80,7 @@
             </div>
         </div>
     </div>
-</footer>
+</footer>-->
 <input id="toastr_admin" value="false" hidden>
 <!-- Create post modal -->
 <div class="modal fade" id="createBlogModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -153,10 +154,10 @@
 <script src="assets/js/profile-service.js"></script>
 <script src="assets/js/featured-service.js"></script>
 <script src="assets/js/stats-service.js"></script>
+<script src="assets/js/myblogs-service.js"></script>
 <script>
     LoginService.checkLoginStatus();
     NavigationBarService.init();
-    BlogsService.init();
 </script>
 </body>
 </html>
