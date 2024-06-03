@@ -145,10 +145,26 @@
  *     )
  * )
  */
-    Flight::route("PUT /users/@id", function($id){
+    Flight::route("PUT /profile/@id", function($id){
         $data = Flight::request()->data->getData();
-        $response = Flight::userService()->update($data,$id);
-        Flight::json(['message'=>'Updated user with new data.','Data'=> $response]);
+        Flight::userService()->updateProfileData($data,$id);
+    });
+
+    Flight::route("PUT /profile/change-password/@id", function($id){
+        $data = Flight::request()->data->getData();
+        Flight::userService()->changePassword($data, $id);
+    });
+
+    Flight::route("GET /admin/all-users", function (){
+        Flight::userService()->get_users_for_admin();
+    });
+
+    Flight::route("PUT /admin/ban-user/@user_id", function ($user_id){
+        Flight::userService()->ban_user($user_id);
+    });
+
+    Flight::route("PUT /admin/unban-user/@user_id", function ($user_id){
+        Flight::userService()->unban_user($user_id);
     });
 
 
@@ -176,21 +192,25 @@
         $login = Flight::request()->data->getData();
         $user = Flight::userService()->getUserByEmail($login['email']);
         if(isset($user['id'])){
-            if($user['password'] == md5($login['password'])){
-                unset($user['password']);
-                unset($user['first_name']);
-                unset($user['last_name']);
-                unset($user['age']);
-                if($user['admin'] == 1){
-                    $user['admin'] = true;
+            if($user['banned'] == 0){
+                if($user['password'] == md5($login['password'])){
+                    unset($user['password']);
+                    unset($user['first_name']);
+                    unset($user['last_name']);
+                    unset($user['age']);
+                    if($user['admin'] == 1){
+                        $user['admin'] = true;
+                    }
+                    else{
+                        $user['admin'] = false;
+                    }
+                    $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
+                    Flight::json(['token'=> $jwt]);
+                } else{
+                    Flight::json(["message" => "Wrong password"], 404);
                 }
-                else{
-                    $user['admin'] = false;
-                }
-                $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
-                Flight::json(['token'=> $jwt]);
-            } else{
-                Flight::json(["message" => "Wrong password"], 404);
+            } else {
+                Flight::json(["message"=>"Your account has been banned."], 409);
             }
         } else{
             Flight::json(["message" => "User doesn't exist"], 404);
