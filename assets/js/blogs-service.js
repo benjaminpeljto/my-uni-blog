@@ -2,25 +2,34 @@
 var BlogsService = {
 
     init:function (){
-        FeaturedService.getFeaturedBlogs();
-        BlogsService.createBlog();
-        BlogsService.editBlog();
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sortType = urlParams.get('sort') || 'all';
+            BlogsService.getAllBlogs(sortType);
+            BlogsService.createBlog();
+            BlogsService.editBlog();
+            BlogsService.sortTypeListener();
+        });
     },
 
-    getAllBlogs: function () {
+    getAllBlogs: function (sortType) {
         $("#btnAll").addClass("active");
         $("#btnFeatured").removeClass("active");
         let currentUserId = Utils.getCurrentUserId();
+        let sortTypes = ['all', 'newest', 'oldest', 'most-liked', 'least-liked']
+        if(!sortTypes.includes(sortType)) sortType='newest';
         RestClient.get(
-            "rest/blogswithuser/" + currentUserId,
+            "rest/blogswithuser/" + sortType +"/" + currentUserId,
             function (data) {
                 var blogsHtml = "";
                 for (var i = 0; i < data.length; i++) {
                     var editBlogOption = "";
                     var deleteBlogOption = "";
+                    var addToFavoritesOption = "<li><a class=\"dropdown-item admin-hide\" onclick=\"Favorite_blogsService.addToFavorites(${data[i].id})\">Add to favorites</a></li>\n";
                     if (data[i].user_id === currentUserId || Utils.isAdmin()) {
                         editBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>`;
                         deleteBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>`;
+                        addToFavoritesOption = "";
                     }
 
                     var likeButtonClass = data[i].liked_by_user ? "liked" : "not-liked";
@@ -40,7 +49,7 @@ var BlogsService = {
                         <ul id="blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
                             ${editBlogOption}
                             ${deleteBlogOption}
-                            <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
+                            ${addToFavoritesOption}
                             <li><a class="dropdown-item user-hide" onclick="FeaturedService.addToFeatured(${data[i].id})">Feature</a></li>
                         </ul>
                     </div>
@@ -53,9 +62,12 @@ var BlogsService = {
                         </div>
                         <div class="d-flex align-items-center">
                             <p class="post-meta mb-0">Category: <a id="post-category" onclick="CategoryService.putCategoryId(${data[i].category_id}); CategoryService.openCategory()">${data[i].category}</a></p>
-                            <button class="btn btn-link ms-3 like-button ${likeButtonClass}" onclick="BlogsService.toggleLike(${data[i].id})">
-                                <i class="fas fa-thumbs-up"></i>
-                            </button>
+                            <div class="d-flex align-items-center ms-3">
+                                <button class="btn btn-link like-button ${likeButtonClass}" onclick="BlogsService.toggleLike(${data[i].id})">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </button>
+                                <span class="likes-count ms-1">${data[i].likes_num}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -150,7 +162,6 @@ var BlogsService = {
                     $("#edit_blog_content").val(blog[0].content);
                 }
             )
-            console.log($("#edit_blog_id").val());
         }
         else{
             toastr.error("Insufficient Permissions")
@@ -205,28 +216,30 @@ var BlogsService = {
     },
 
     postEditedBlog: function(entity){
+        var fromPage = entity['page'];
+        delete entity.page
         RestClient.put(
             "rest/blogs/" + entity.id,
                 entity,
             function (){
                 toastr.info("Blog has been updated");
+                fromPage === 'home' ? BlogsService.getAllBlogs() : MyblogsService.getMyBlogs();
                 BlogsService.closeEditModal();
-                BlogsService.getAllBlogs();
                 BlogsService.resetEditBlogForm();
             }
         )
-
     },
 
 
     deleteBlog: function(){
         var postId = $("#postId").val();
+        var fromPage = $("#from-page-delete").val();
         RestClient.delete(
             "rest/blogs/" + postId,
             function (result){
                     toastr.success("Blog no. " + postId + " deleted.")
                     BlogsService.closeDeleteModal();
-                    BlogsService.getAllBlogs();
+                    fromPage === "home" ? BlogsService.getAllBlogs() : MyblogsService.getMyBlogs();
                 }
         )
     },
@@ -293,8 +306,11 @@ var BlogsService = {
             function(result){
                 toastr.success("Blog successfully posted!");
                 BlogsService.closeCreateModal();
-                BlogsService.getBlogs();
                 BlogsService.resetCreateBlogForm();
+                const hash = window.location.hash;
+                const page = hash.split('/').pop();
+                console.log(page)
+                page === '#myblogs' ? MyblogsService.getMyBlogs() : BlogsService.getAllBlogs();
             }
         )
     },
@@ -339,7 +355,8 @@ var BlogsService = {
     },
 
     toggleLike: function(blogId){
-        const likeButton = $(`#blog-${blogId} .like-button`); // Use an ID to find the specific blog post's like button
+        const likeButton = $(`#blog-${blogId} .like-button`);
+        const likeCount = $(`#blog-${blogId} .likes-count`);
         RestClient.post(
             "rest/like/" + blogId + "/" + Utils.getCurrentUserId(),
             null,
@@ -352,11 +369,28 @@ var BlogsService = {
                     // Toggle the like button state
                     if (likeButton.hasClass("liked")) {
                         likeButton.removeClass("liked").addClass("not-liked");
+                        likeCount.html(Number(likeCount.html())-1)
                     } else {
                         likeButton.removeClass("not-liked").addClass("liked");
+                        likeCount.html(Number(likeCount.html())+1)
                     }
                 }
             }
         )
     },
+
+
+    sortTypeListener: function(){
+        $(document).off('click', '.filter-blogs-dropdown-item'); // Remove any previously attached click handlers
+        $(document).on('click', '.filter-blogs-dropdown-item', function (event) {
+            event.preventDefault();
+            const sortType = $(this).data('sort');
+            const url = new URL(window.location);
+            url.searchParams.set('sort', sortType);
+            window.history.pushState({}, '', url);
+            console.log("sort listener")
+            BlogsService.getAllBlogs(sortType);
+        });
+
+    }
 }
