@@ -36,8 +36,28 @@ Flight::route("GET /blogswithuser", function () {
     Flight::json(Flight::blogService()->get_blogs_with_user());
 });
 
-Flight::route("GET /blogswithuser/@user_id", function ($user_id){
-    Flight::json(Flight::blogService()->get_blogs_with_user_for_user($user_id));
+Flight::route("GET /blogswithuser/all/@user_id", function ($user_id){
+    Flight::json(Flight::blogService()->get_blogs_all_random_with_user_for_user($user_id));
+});
+
+Flight::route("GET /blogswithuser/newest/@user_id", function ($user_id){
+    Flight::json(Flight::blogService()->get_blogs_newest_with_user_for_user($user_id));
+});
+
+Flight::route("GET /blogswithuser/oldest/@user_id", function ($user_id){
+    Flight::json(Flight::blogService()->get_blogs_oldest_with_user_for_user($user_id));
+});
+
+Flight::route("GET /blogswithuser/most-liked/@user_id", function($user_id){
+    Flight::json(Flight::blogService()->get_blogs_most_liked_with_user_for_user($user_id));
+});
+
+Flight::route("GET /blogswithuser/least-liked/@user_id", function($user_id){
+    Flight::json(Flight::blogService()->get_blogs_least_liked_with_user_for_user($user_id));
+});
+
+Flight::route("GET /myblogs/@user_id", function($user_id){
+    Flight::json(Flight::blogService()->get_my_blogs($user_id));
 });
 
 
