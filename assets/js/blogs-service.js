@@ -21,7 +21,11 @@ var BlogsService = {
         RestClient.get(
             "rest/blogswithuser/" + sortType +"/" + currentUserId,
             function (data) {
-                var blogsHtml = "";
+                if(data.length == 0){
+                    BlogsService.postNoBlogs();
+                } else {
+                    $(".filter-blogs-dropdown-container-class").show()
+                    var blogsHtml = "";
                 for (var i = 0; i < data.length; i++) {
                     var editBlogOption = "";
                     var deleteBlogOption = "";
@@ -80,6 +84,7 @@ var BlogsService = {
                 $("#blogs").html(blogsHtml);
                 BlogsService.optionsForAdmin();
             }
+            }
         );
     },
 
@@ -113,6 +118,18 @@ var BlogsService = {
                     $("#blog-content").html(data[0].content);
                 }
             );
+    },
+
+    postNoBlogs: function(){
+        $(".filter-blogs-dropdown-container-class").hide()
+        $("#blogs").html(`<div id="no-favorites-container" class="mt-4">
+            <div id="sad-smiley-box">
+              <img id="no-favorites-emoji" src="assets/img/sad_smiley-removebg.png" alt="sad smiley face">
+            </div>
+            <h1>Currently there are no blogs posted.</h1>
+            <h6>Be first to post your university experience by clicking on the <span style="font-weight: bold">"CREATE"</span> button.</h6>
+          </div>`);
+
     },
 
     changeToBlogDetails: function (data){
@@ -247,10 +264,13 @@ var BlogsService = {
 
     createBlog: function (){
         $.validator.addMethod("minThreeSentences", function(value, element) {
-            var sentences = value.split('.');
+            // Split the content into sentences using period, exclamation mark, and question mark as delimiters
+            var sentences = value.split(/[.!?]+/);
+            // Filter out empty sentences
             sentences = sentences.filter(function(sentence) {
-                return sentence.trim() !== '';
+                return sentence.trim().length > 0;
             });
+            // Check if there are at least three sentences
             return sentences.length >= 3;
         }, "Please enter at least three sentences.");
 
@@ -260,43 +280,61 @@ var BlogsService = {
 
 
         $("#createBlogForm").validate({
-            rules:{
-                title:{
-                    required:true,
+            rules: {
+                title: {
+                    required: true,
                     minlength: 5,
                     maxlength: 50
                 },
-                content:{
-                    required:true,
+                content: {
+                    required: true,
                     minThreeSentences: true,
                     minlength: 100,
                     maxlength: 10000
                 },
-                category:{
+                category_id: {
                     required: true,
-                    categorySelected:true,
+                    min: 1 // Ensures a category other than "Choose.." is selected
                 }
             },
-            submitHandler: function (form, event){
+            messages: {
+                title: {
+                    required: "Please enter a blog title.",
+                    minlength: "Title must be at least 5 characters long.",
+                    maxlength: "Title cannot be longer than 50 characters."
+                },
+                content: {
+                    required: "Please enter blog content.",
+                    minThreeSentences: "Content must have at least three sentences.",
+                    minlength: "Content must be at least 100 characters long.",
+                    maxlength: "Content cannot be longer than 10000 characters."
+                },
+                category_id: {
+                    required: "Please select a category.",
+                    min: "Please select a valid category."
+                }
+            },
+            submitHandler: function(form, event) {
                 event.preventDefault();
                 var token = localStorage.getItem("user_token");
-                if(token){
+                if (token) {
                     var entity = Utils.form2json(form);
+
+                    // Sanitize the blog content
+                    entity.content = DOMPurify.sanitize(entity.content);
+
                     entity['create_time'] = BlogsService.getCurrentDateTime();
                     var user = Utils.parseJwt(token);
                     entity['user_id'] = user.id;
-                    if(entity['category_id']=="null"){
+                    if (entity['category_id'] == "null") {
                         delete entity.category_id;
                     }
-
                     BlogsService.postBlog(entity);
-                }
-                else{
+                } else {
                     toastr.error("You need to be logged in to post a blog.");
                 }
-
             }
-        })
+        });
     },
 
     postBlog: function(entity){
