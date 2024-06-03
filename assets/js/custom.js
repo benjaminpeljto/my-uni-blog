@@ -48,6 +48,11 @@ $(function() {
     load: "statistics.html"
   });
 
+  app.route({
+    view: "myblogs",
+    load: "myblogs.html"
+  });
+
   // run app
   app.run();
 
