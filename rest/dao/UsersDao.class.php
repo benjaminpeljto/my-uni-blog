@@ -39,6 +39,7 @@ class UsersDao extends BaseDao{
         $stmt = $this->conn->prepare(
             "SELECT u.id, 
                        CONCAT(u.first_name, ' ', u.last_name) AS 'user',
+                       u.profile_picture,
                        IF(u.banned, true, false) as 'banned',
                        COUNT(DISTINCT b.id) AS 'total_blogs',
                        COALESCE(SUM(b.likes_count), 0) AS 'total_likes'

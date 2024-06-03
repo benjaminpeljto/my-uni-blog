@@ -37,6 +37,7 @@ var StatsService = {
                 <div class="card mb-4" style="box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); border: none; transition: transform 0.2s;">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center">
+                            <img src="${user.profile_picture}" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 1px solid #29a0ee;">
                             <h5 class="card-title" style="font-size: 1.25rem; color: #007bff; font-weight: bold;">${user.user}</h5>
                             <p class="card-text" style="font-size: 1rem; color: #333;"><strong>Total blogs:</strong> ${user.total_blogs}</p>
                             <p class="card-text" style="font-size: 1rem; color: #333;"><strong>Total likes:</strong> ${user.total_likes}</p>
@@ -59,6 +60,7 @@ var StatsService = {
             });
         });
     },
+
 
     banUser: function(user_id) {
         RestClient.put("rest/admin/ban-user/" + user_id, null, function(response) {
