@@ -21,7 +21,7 @@
                 <div class="profile-picture mb-3">
                     <img id="profile-profile-image" src='' alt="Profile Picture">
                 </div>
-                <button id="change-profile-picture-btn" class="btn btn-primary" onclick="ProfileService.openImageChangeModal()">Change Profile Picture</button>
+                <button id="change-profile-picture-btn" class="btn btn-outline-primary" onclick="ProfileService.openImageChangeModal()">Change Profile Picture</button>
             </div>
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="card profile-info-container p-4 shadow">
@@ -39,10 +39,12 @@
                             <div class="font-weight-bold flex-grow-1">Age:</div>
                             <div id="profile-age"></div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mb-4">
                             <div class="font-weight-bold flex-grow-1">Email:</div>
                             <div id="profile-email"></div>
                         </div>
+                        <button id="edit-profile-info-btn" onclick="ProfileService.openEditProfileDataModal()" class="btn btn-outline-primary">Edit Profile Data</button>
+                        <button id="edit-profile-change-password-btn" onclick="ProfileService.openChangeProfilePasswordModal()" class="btn btn-outline-primary">Change password</button>
                     </div>
                 </div>
             </div>
@@ -51,8 +53,8 @@
 </main>
 
 
-<!-- Image Upload Modal -->
-<!--<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalTitle" aria-hidden="true">
+<!-- ? Image upload modal -->
+<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="profilePictureChangeForm">
@@ -86,7 +88,143 @@
             <img id="imagePreview" src="" alt="Image Preview" style="display: none; max-width: 100%; height: auto;"/>
         </div>
     </div>
-</div>-->
+</div>
+
+<!-- ? Edit profile data modal -->
+<div class="modal fade" id="editProfileDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit profile</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileDataForm">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="editProfileFirstName">First name:</label>
+                            <input
+                                    type="text"
+                                    id="editProfileFirstName"
+                                    name="first_name"
+                                    class="form-control"
+                            />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="editProfileLastName">Last name:</label>
+                            <input
+                                    type="text"
+                                    id="editProfileLastName"
+                                    name="last_name"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="editProfileAge">Age:</label>
+                        <input
+                                type="number"
+                                id="editProfileAge"
+                                name="age"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="editProfileEmail">Email:</label>
+                        <input
+                                type="email"
+                                id="editProfileEmail"
+                                name="email"
+                                class="form-control"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProfilePasswordCheck">Confirm with password</label>
+                        <input
+                                type="password"
+                                id="editProfilePasswordCheck"
+                                name="password"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="error"><span></span></div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                onclick="ProfileService.closeEditProfileDataModal()"
+                        >Close</button>
+                        <button type="submit" class="btn btn-success">Edit profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ? Change profile password modal -->
+<div class="modal fade" id="changeProfilePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change password</h4>
+            </div>
+            <div class="modal-body">
+                <form id="changeProfilePasswordForm">
+                    <div class="form-group">
+                        <label for="profileCurrentPassword">Current password:</label>
+                        <input
+                                type="password"
+                                id="profileCurrentPassword"
+                                name="profileCurrentPassword"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileNewPassword">New password:</label>
+                        <input
+                                type="password"
+                                id="profileNewPassword"
+                                name="password"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileNewPassword2">Confirm new password:</label>
+                        <input
+                                type="password"
+                                id="profileNewPassword2"
+                                name="password2"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="error"><span></span></div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                onclick="ProfileService.closeChangeProfilePasswordModal()"
+                        >Close</button>
+                        <button type="submit" class="btn btn-success">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
