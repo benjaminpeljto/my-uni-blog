@@ -240,20 +240,16 @@ Flight::route('GET /google-login', function () {
     global $client;
     $authUrl = $client->createAuthUrl();
     if ($authUrl) {
-        header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
-        exit();
+        Flight::json(['authUrl' => $authUrl]);
     } else {
         Flight::json(['error' => 'Unable to create auth URL'], 500);
     }
 });
 
+
 // ! ||--------------------------------------------------------------------------------||
 // ! ||                                 Google callback                                ||
 // ! ||--------------------------------------------------------------------------------||
-
-
-
-
 
 
 Flight::route('GET /google-callback', function () {
@@ -273,16 +269,12 @@ Flight::route('GET /google-callback', function () {
         Flight::json(['error' => $token['error_description']], 400);
         return;
     }
-
     $client->setAccessToken($token['access_token']);
-
     $oauth2 = new Oauth2($client);
     $googleUserInfo = $oauth2->userinfo->get();
-
     $email = $googleUserInfo->email;
     $firstName = $googleUserInfo->givenName;
     $lastName = $googleUserInfo->familyName;
-
     $userService = Flight::userService();
     $user = $userService->getUserByEmail($email);
 
@@ -307,7 +299,7 @@ Flight::route('GET /google-callback', function () {
             'email' => $email,
             'password' => md5(uniqid()), // Random password
             'age' => '', // Google API doesn't provide age
-            'profile_picture' => 'https://i.sstatic.net/34AD2.jpg', // Google API doesn't provide profile picture as binary
+            'profile_picture' => 'https://i.sstatic.net/34AD2.jpg', // Google API doesn't provide the profile picture 
             'admin' => 0
         ];
         $userService->add($newUser);
@@ -317,4 +309,6 @@ Flight::route('GET /google-callback', function () {
         $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
         Flight::json(['token' => $jwt]);
     }
+    $redirectUrl = "http://localhost/my-uni-blog/index.html?token=" . $jwt;
+    Flight::redirect($redirectUrl);
 });
