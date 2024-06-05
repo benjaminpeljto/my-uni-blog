@@ -4,6 +4,7 @@ use Firebase\JWT\JWT;
 use Google\Client;
 use Google\Service\Oauth2;
 
+
 require_once 'google-config.php';
 
 
@@ -251,14 +252,20 @@ Flight::route('GET /google-login', function () {
 // ! ||--------------------------------------------------------------------------------||
 
 
+
+
+
+
 Flight::route('GET /google-callback', function () {
     global $client;
 
+    // Check if 'code' parameter is present
     if (!isset(Flight::request()->query['code'])) {
         Flight::json(['error' => 'Authorization code not provided'], 400);
         return;
     }
 
+    // Fetch the authorization code from the query parameters
     $authCode = Flight::request()->query['code'];
     $token = $client->fetchAccessTokenWithAuthCode($authCode);
 
@@ -280,33 +287,34 @@ Flight::route('GET /google-callback', function () {
     $user = $userService->getUserByEmail($email);
 
     if ($user) {
+        // User exists, log them in
         if ($user['banned'] == 0) {
             unset($user['password']);
-            $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
-            $redirectUrl = 'http://localhost/my-uni-blog/index.html?token=' . $jwt;
-            header('Location: ' . filter_var($redirectUrl, FILTER_SANITIZE_URL));
-            exit();
+            $jwt = JWT::encode(
+                $user,
+                Config::JWT_SECRET(),
+                'HS256'
+            );
+            Flight::json(['token' => $jwt]);
         } else {
             Flight::json(["message" => "Your account has been banned."], 409);
         }
     } else {
+        // User does not exist, register them
         $newUser = [
             'first_name' => $firstName,
             'last_name' => $lastName,
             'email' => $email,
-            'password' => md5(uniqid()),
-            'age' => '',
-            'profile_picture' => 'https://i.sstatic.net/34AD2.jpg',
-            'admin' => 0,
-            'banned' => 0
+            'password' => md5(uniqid()), // Random password
+            'age' => '', // Google API doesn't provide age
+            'profile_picture' => 'https://i.sstatic.net/34AD2.jpg', // Google API doesn't provide profile picture as binary
+            'admin' => 0
         ];
         $userService->add($newUser);
 
         $user = $userService->getUserByEmail($email);
         unset($user['password']);
         $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
-        $redirectUrl = 'http://localhost/my-uni-blog/index.html?token=' . $jwt;
-        header('Location: ' . filter_var($redirectUrl, FILTER_SANITIZE_URL));
-        exit();
+        Flight::json(['token' => $jwt]);
     }
 });
