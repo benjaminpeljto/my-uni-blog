@@ -10,17 +10,17 @@ class Config
 
     public static function DB_SCHEME()
     {
-        return Config::get_env('DB_SCHEME', 'web_blog_08_07_2023');
+        return Config::get_env('DB_SCHEME', 'peljto');
     }
 
     public static function DB_USERNAME()
     {
-        return Config::get_env('DB_USERNAME', 'web_project_user');
+        return Config::get_env('DB_USERNAME', 'root');
     }
 
     public static function DB_PASSWORD()
     {
-        return Config::get_env('DB_PASSWORD', '71000Sarajevo');
+        return Config::get_env('DB_PASSWORD', '');
     }
 
     public static function DB_PORT()
