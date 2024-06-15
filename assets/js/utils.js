@@ -67,14 +67,15 @@ $(document).ready(function () {
 			window.location.host +
 			window.location.pathname;
 		window.history.replaceState({ path: newUrl }, "", newUrl);
-
-		location.reload();
+		window.location.replace("index.html");
 	} else {
 		console.log("No JWT Token found in URL.");
 
 		console.log("Checking for login status...");
 		var storedToken = localStorage.getItem("user_token");
-		if (!storedToken) {
+		if (!storedToken && window.location.pathname.endsWith("/login.html")) {
+			console.log("On login page but no token found, staying on login page...");
+		} else if (!storedToken) {
 			console.log("No token found in local storage, redirecting to login...");
 			window.location.href = "login.html";
 		} else {
