@@ -16,7 +16,7 @@ var BlogsService = {
         $("#btnAll").addClass("active");
         $("#btnFeatured").removeClass("active");
         let currentUserId = Utils.getCurrentUserId();
-        let sortTypes = ['all', 'newest', 'oldest', 'most-liked', 'least-liked']
+        let sortTypes = ['all', 'newest', 'oldest', 'most-liked', 'least-liked', 'featured'];
         if(!sortTypes.includes(sortType)) sortType='newest';
         RestClient.get(
             "rest/blogswithuser/" + sortType +"/" + currentUserId,
@@ -121,12 +121,14 @@ var BlogsService = {
     },
 
     postNoBlogs: function(){
+/*
         $(".filter-blogs-dropdown-container-class").hide()
+*/
         $("#blogs").html(`<div id="no-favorites-container" class="mt-4">
             <div id="sad-smiley-box">
               <img id="no-favorites-emoji" src="assets/img/sad_smiley-removebg.png" alt="sad smiley face">
             </div>
-            <h1>Currently there are no blogs posted.</h1>
+            <h1>No blogs to display.</h1>
             <h6>Be first to post your university experience by clicking on the <span style="font-weight: bold">"CREATE"</span> button.</h6>
           </div>`);
 

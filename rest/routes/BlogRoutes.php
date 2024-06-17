@@ -56,6 +56,10 @@ Flight::route("GET /blogswithuser/least-liked/@user_id", function($user_id){
     Flight::json(Flight::blogService()->get_blogs_least_liked_with_user_for_user($user_id));
 });
 
+Flight::route("GET /blogswithuser/featured/@user_id", function($user_id){
+    Flight::json(Flight::blogService()->get_blogs_featured_with_user_for_user($user_id));
+});
+
 Flight::route("GET /myblogs/@user_id", function($user_id){
     Flight::json(Flight::blogService()->get_my_blogs($user_id));
 });

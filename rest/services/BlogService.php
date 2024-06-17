@@ -37,6 +37,10 @@ class BlogService extends BaseService
         return $this->dao->get_blogs_least_liked_with_user_for_user($user_id);
     }
 
+    public function get_blogs_featured_with_user_for_user($user_id){
+        return $this->dao->get_blogs_featured_with_user_for_user($user_id);
+    }
+
     public function get_blog_with_user_by_id($id){
         return $this->dao->get_blog_with_user_by_id($id);
     }
