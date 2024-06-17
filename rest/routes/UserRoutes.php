@@ -299,7 +299,6 @@ Flight::route('GET /google-callback', function () {
             'email' => $email,
             'password' => md5(uniqid()), // Random password
             'age' => '', // Google API doesn't provide age
-            'profile_picture' => 'https://i.sstatic.net/34AD2.jpg', // Google API doesn't provide the profile picture 
             'admin' => 0
         ];
         $userService->add($newUser);
