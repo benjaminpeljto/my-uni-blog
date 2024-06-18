@@ -16,7 +16,13 @@ class BaseDao
         $schema = Config::DB_SCHEME();
         $port = Config::DB_PORT();
 
-        $this->conn = new PDO("mysql:host=$host;port=$port;dbname=$schema", $username, $password);
+        /* options array neccessary to enable ssl mode - do not change */
+        $options = array(
+            PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../../isrgrootx1.pem',
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        );
+
+        $this->conn = new PDO("mysql:host=$host;port=$port;dbname=$schema", $username, $password, $options);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
