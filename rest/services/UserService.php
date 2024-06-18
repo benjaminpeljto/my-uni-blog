@@ -16,7 +16,7 @@ class UserService extends BaseService{
     function add($entity){
         unset($entity['password2']);
         $entity['password'] = md5($entity['password']);
-        parent::add($entity);
+        return parent::add($entity);
     }
 
     function get_number_of_users(){

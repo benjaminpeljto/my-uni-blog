@@ -227,7 +227,7 @@ Flight::route("POST /login", function () {
 Flight::route("POST /register", function () {
     $data = Flight::request()->data->getData();
     $response = Flight::userService()->add($data);
-    Flight::json(['message' => 'User added sucessfully.']);
+    Flight::json(['message' => 'User added sucessfully.', 'id' => $response['id']]);
 });
 
 
