@@ -10,17 +10,17 @@ class Config
 
     public static function DB_SCHEME()
     {
-        return Config::get_env('DB_SCHEME', 'peljto');
+        return Config::get_env('DB_SCHEME', 'web_blog_08_07_2023');
     }
 
     public static function DB_USERNAME()
     {
-        return Config::get_env('DB_USERNAME', 'root');
+        return Config::get_env('DB_USERNAME', 'web_project_user');
     }
 
     public static function DB_PASSWORD()
     {
-        return Config::get_env('DB_PASSWORD', '');
+        return Config::get_env('DB_PASSWORD', '71000Sarajevo');
     }
 
     public static function DB_PORT()
@@ -38,15 +38,24 @@ class Config
         return Config::get_env('IMGUR_CLIENT_ID', '350cf882ac77ef1');
     }
 
+    public static function GOOGLE_CLIENT_ID()
+    {
+        return Config::get_env('GOOGLE_CLIENT_ID', 'your_google_console_id');
+    }
+
+    public static function GOOGLE_CLIENT_SECRET()
+    {
+        return Config::get_env('GOOGLE_CLIENT_SECRET', 'your_google_console_secret');
+    }
+
+    public static function GOOGLE_REDIRECT_URI()
+    {
+        return Config::get_env('GOOGLE_REDIRECT_URI', 'http://localhost/my-uni-blog/rest/google-callback');
+    }
+
     public static function get_env($name, $default)
     {
         return isset($_ENV[$name]) && trim($_ENV[$name]) != '' ? $_ENV[$name] : $default;
     }
-    /*
-public static $host = 'db-mysql-fra1-72051-do-user-13671971-0.b.db.ondigitalocean.com';
-public static $database = 'blog_database';
-public static $username = 'doadmin';
-public static $password = 'AVNS_bAPPIGBnUv-BIhQTBiS';
-public static $port = '25060';
- */
+
 }
