@@ -92,6 +92,11 @@ class BaseDao
         $stmt->execute($entity);
         return $entity;
     }
+
+    public function get_connection(){
+        return $this->conn;
+    }
+
     //$stmt->execute(['id'=>$id,'first_name'=>$first_name,'last_name'=>$last_name,'age'=>$age]);
 
 }
