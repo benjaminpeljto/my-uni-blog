@@ -53,6 +53,11 @@ class Config
         return Config::get_env('GOOGLE_REDIRECT_URI', 'http://localhost/my-uni-blog/rest/google-callback');
     }
 
+    public static function APP_BASE_URL()
+    {
+        return Config::get_env('APP_BASE_URL', 'http://localhost/my-uni-blog');
+    }
+
     public static function get_env($name, $default)
     {
         return isset($_ENV[$name]) && trim($_ENV[$name]) != '' ? $_ENV[$name] : $default;

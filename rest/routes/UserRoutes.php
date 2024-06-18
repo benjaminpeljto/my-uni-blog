@@ -6,6 +6,7 @@ use Google\Service\Oauth2;
 
 
 require_once 'google-config.php';
+require_once __DIR__ . '/../Config.class.php';
 
 
 
@@ -308,6 +309,6 @@ Flight::route('GET /google-callback', function () {
         $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
         Flight::json(['token' => $jwt]);
     }
-    $redirectUrl = "http://localhost/my-uni-blog/index.html?token=" . $jwt;
+    $redirectUrl = Config::APP_BASE_URL() . "/index.html?token=" . $jwt;
     Flight::redirect($redirectUrl);
 });
