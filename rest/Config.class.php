@@ -35,7 +35,7 @@ class Config
 
     public static function IMGUR_CLIENT_ID()
     {
-        return Config::get_env('IMGUR_CLIENT_ID', '350cf882ac77ef1');
+        return Config::get_env('IMGUR_CLIENT_ID', 'your_imgur_id');
     }
 
     public static function GOOGLE_CLIENT_ID()
