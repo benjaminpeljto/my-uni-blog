@@ -3,12 +3,19 @@ var FeaturedService = {
     getFeaturedBlogs: function (){
         $("#btnAll").removeClass("active");
         $("#btnFeatured").addClass("active");
+        let currentUserId = Utils.getCurrentUserId();
         RestClient.get(
             "rest/featuredblogs",
             function (data){
 
                 var blogsHtml = "";
                 for (var i = 0; i < data.length; i++) {
+                    var editBlogOption = "";
+                    var deleteBlogOption = "";
+                    if (data[i].user_id === currentUserId || Utils.isAdmin()) {
+                        editBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>`;
+                        deleteBlogOption = `<li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>`;
+                    }
                     var eachBlog = "";
                     eachBlog = `
                         <!-- Post preview -->
@@ -20,6 +27,7 @@ var FeaturedService = {
                             </a>
                             <div class="row">
                             <p class="col-8 post-meta">
+                                <img src="${data[i].profile_picture}" alt="${data[i].user}'s profile image" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
                                 Posted by
                                 <a id="posted_by_user">${data[i].user}</a>
                                 on ${BlogsService.formatDate(data[i].create_time)}
@@ -30,8 +38,8 @@ var FeaturedService = {
                                         <i class="fas fa-ellipsis-v" style="color: black;"></i>
                                     </a>
                                     <ul id="blog-options" class="dropdown-menu" aria-labelledby="postOptionsDropdown">
-                                        <li><a class="dropdown-item admin-hide" onclick="BlogsService.openEditModal(${data[i].id},${data[i].user_id})">Edit</a></li>
-                                        <li><a class="dropdown-item" onclick="BlogsService.openDeleteModal(${data[i].id},${data[i].user_id})">Delete</a></li>
+                                        ${editBlogOption}
+                                        ${deleteBlogOption}
                                         <li><a class="dropdown-item admin-hide" onclick="Favorite_blogsService.addToFavorites(${data[i].id})">Add to favorites</a></li>
                                         <li><a class="dropdown-item user-hide" onclick="FeaturedService.removeFromFeatured(${data[i].id})">Unfeature</a></li>
                                     </ul>
@@ -39,7 +47,7 @@ var FeaturedService = {
                             </div>
                         </div>
                         <!-- Divider -->
-                        <hr class="my-4" />`;
+                        <hr class="mb-4 mt-1" />`;
 
                     blogsHtml += eachBlog;
                 }

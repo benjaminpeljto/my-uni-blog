@@ -1,7 +1,14 @@
 <?php
 
-    use Firebase\JWT\JWT;
-    use Firebase\JWT\Key;
+use Firebase\JWT\JWT;
+use Google\Client;
+use Google\Service\Oauth2;
+
+
+require_once 'google-config.php';
+require_once __DIR__ . '/../Config.class.php';
+
+
 
 /**
  * @OA\Get(path="/users", tags={"Users"}, security={{"ApiKeyAuth": {}}},
@@ -9,12 +16,9 @@
  *         @OA\Response( response=200, description="List of users")
  * )
  */
-    Flight::route("GET /users",function(){
-        Flight::json(Flight::userService()->get_all());  
-    });
-
-
-
+Flight::route("GET /users", function () {
+    Flight::json(Flight::userService()->get_all());
+});
 
 /**
  * @OA\Get(path="/users/{id}", tags={"Users"}, security={{"ApiKeyAuth": {}}},
@@ -23,12 +27,18 @@
  *     @OA\Response(response="200", description="Fetch user by ID")
  * )
  */
-    Flight::route("GET /users/@id", function($id){
-        Flight::json(Flight::userService()->get_by_id($id));
-    });
+Flight::route("GET /users/@id", function ($id) {
+    Flight::json(Flight::userService()->get_by_id($id));
+});
 
+Flight::route("GET /profile/@id", function ($id) {
+    Flight::json(Flight::userService()->get_profile_info($id));
+});
 
-
+Flight::route("POST /profile/image-change/@userid", function ($userid) {
+    $image = Flight::request()->files->getData()['image'];
+    Flight::userService()->update_profile_picture($userid, $image);
+});
 
 /**
  * @OA\Get(path="/usersById", tags={"Users"}, security={{"ApiKeyAuth": {}}},
@@ -37,12 +47,9 @@
  *     @OA\Response(response="200", description="Fetch user by ID")
  * )
  */
-    Flight::route("GET /usersById", function(){
-        Flight::json(Flight::userService()->get_by_id(Flight::request()->query['id']));
-    });
-
-
-
+Flight::route("GET /usersById", function () {
+    Flight::json(Flight::userService()->get_by_id(Flight::request()->query['id']));
+});
 
 /**
  * @OA\Delete(path="/users/{id}", tags={"Users"}, security={{"ApiKeyAuth": {}}},
@@ -51,14 +58,10 @@
  *     @OA\Response(response="200", description="Deleted user by ID")
  * )
  */
-    Flight::route("DELETE /users/@id", function($id){
-        Flight::userService()->delete($id);
-        Flight::json(['message'=>'User by id ' . $id . ' has been deleted.']);
-    });
-
-
-
-
+Flight::route("DELETE /users/@id", function ($id) {
+    Flight::userService()->delete($id);
+    Flight::json(['message' => 'User by id ' . $id . ' has been deleted.']);
+});
 
 /**
  * @OA\Get(path="/numberofusers", tags={"Users"}, security={{"ApiKeyAuth": {}}},
@@ -66,13 +69,9 @@
  *         @OA\Response( response=200, description="Fetched the number.")
  * )
  */
-    Flight::route("GET /numberofusers",function (){
-        Flight::json(Flight::userService()->get_number_of_users());
-    });
-
-
-
-
+Flight::route("GET /numberofusers", function () {
+    Flight::json(Flight::userService()->get_number_of_users());
+});
 
 /**
  * @OA\Post(path="/users", tags={"Users"}, description="Add a new user", security={{"ApiKeyAuth": {}}},
@@ -98,13 +97,11 @@
  *     )
  * )
  */
-    Flight::route("POST /users", function(){
-        $data = Flight::request()->data->getData();
-        $response = Flight::userService()->add($data);
-        Flight::json(['message'=>'User added sucessfully.']);
-        
-    });
-
+Flight::route("POST /users", function () {
+    $data = Flight::request()->data->getData();
+    $response = Flight::userService()->add($data);
+    Flight::json(['message' => 'User added sucessfully.']);
+});
 
 /**
  * @OA\Put(path="/users/{id}", tags={"Users"}, description="Update a user", security={{"ApiKeyAuth": {}}},
@@ -134,12 +131,27 @@
  *     )
  * )
  */
-    Flight::route("PUT /users/@id", function($id){
-        $data = Flight::request()->data->getData();
-        $response = Flight::userService()->update($data,$id);
-        Flight::json(['message'=>'Updated user with new data.','Data'=> $response]);
-    });
+Flight::route("PUT /profile/@id", function ($id) {
+    $data = Flight::request()->data->getData();
+    Flight::userService()->updateProfileData($data, $id);
+});
 
+Flight::route("PUT /profile/change-password/@id", function ($id) {
+    $data = Flight::request()->data->getData();
+    Flight::userService()->changePassword($data, $id);
+});
+
+Flight::route("GET /admin/all-users", function () {
+    Flight::userService()->get_users_for_admin();
+});
+
+Flight::route("PUT /admin/ban-user/@user_id", function ($user_id) {
+    Flight::userService()->ban_user($user_id);
+});
+
+Flight::route("PUT /admin/unban-user/@user_id", function ($user_id) {
+    Flight::userService()->unban_user($user_id);
+});
 
 /**
  * @OA\Post(path="/login", tags={"Login and Register"}, description="Login to account", security={{"ApiKeyAuth": {}}},
@@ -161,33 +173,33 @@
  *     )
  * )
  */
-    Flight::route("POST /login", function(){
-        $login = Flight::request()->data->getData();
-        $user = Flight::userService()->getUserByEmail($login['email']);
-        if(isset($user['id'])){
-            if($user['password'] == md5($login['password'])){
+Flight::route("POST /login", function () {
+    $login = Flight::request()->data->getData();
+    $user = Flight::userService()->getUserByEmail($login['email']);
+    if (isset($user['id'])) {
+        if ($user['banned'] == 0) {
+            if ($user['password'] == md5($login['password'])) {
                 unset($user['password']);
                 unset($user['first_name']);
                 unset($user['last_name']);
-                unset($user['email']);
                 unset($user['age']);
-                unset($user['profile_picture']);
-                if($user['admin'] == 1){
+                if ($user['admin'] == 1) {
                     $user['admin'] = true;
-                }
-                else{
+                } else {
                     $user['admin'] = false;
                 }
                 $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
-                Flight::json(['token'=> $jwt]);
-            } else{
+                Flight::json(['token' => $jwt]);
+            } else {
                 Flight::json(["message" => "Wrong password"], 404);
             }
-        } else{
-            Flight::json(["message" => "User doesn't exist"], 404);
+        } else {
+            Flight::json(["message" => "Your account has been banned."], 409);
         }
-    });
-
+    } else {
+        Flight::json(["message" => "User doesn't exist"], 404);
+    }
+});
 
 /**
  * @OA\Post(path="/register", tags={"Login and Register"}, description="Register new account", security={{"ApiKeyAuth": {}}},
@@ -213,8 +225,90 @@
  *     )
  * )
  */
-    Flight::route("POST /register",  function (){
-        $data = Flight::request()->data->getData();
-        $response = Flight::userService()->add($data);
-        Flight::json(['message'=>'User added sucessfully.']);
-    });
+Flight::route("POST /register", function () {
+    $data = Flight::request()->data->getData();
+    $response = Flight::userService()->add($data);
+    Flight::json(['message' => 'User added sucessfully.', 'id' => $response['id']]);
+});
+
+
+
+// ! ||--------------------------------------------------------------------------------||
+// ! ||                       This takes you to google login page                      ||
+// ! ||--------------------------------------------------------------------------------||
+
+Flight::route('GET /google-login', function () {
+    global $client;
+    $authUrl = $client->createAuthUrl();
+    if ($authUrl) {
+        Flight::json(['authUrl' => $authUrl]);
+    } else {
+        Flight::json(['error' => 'Unable to create auth URL'], 500);
+    }
+});
+
+
+// ! ||--------------------------------------------------------------------------------||
+// ! ||                                 Google callback                                ||
+// ! ||--------------------------------------------------------------------------------||
+
+
+Flight::route('GET /google-callback', function () {
+    global $client;
+
+    // Check if 'code' parameter is present
+    if (!isset(Flight::request()->query['code'])) {
+        Flight::json(['error' => 'Authorization code not provided'], 400);
+        return;
+    }
+
+    // Fetch the authorization code from the query parameters
+    $authCode = Flight::request()->query['code'];
+    $token = $client->fetchAccessTokenWithAuthCode($authCode);
+
+    if (isset($token['error'])) {
+        Flight::json(['error' => $token['error_description']], 400);
+        return;
+    }
+    $client->setAccessToken($token['access_token']);
+    $oauth2 = new Oauth2($client);
+    $googleUserInfo = $oauth2->userinfo->get();
+    $email = $googleUserInfo->email;
+    $firstName = $googleUserInfo->givenName;
+    $lastName = $googleUserInfo->familyName;
+    $userService = Flight::userService();
+    $user = $userService->getUserByEmail($email);
+
+    if ($user) {
+        // User exists, log them in
+        if ($user['banned'] == 0) {
+            unset($user['password']);
+            $jwt = JWT::encode(
+                $user,
+                Config::JWT_SECRET(),
+                'HS256'
+            );
+            Flight::json(['token' => $jwt]);
+        } else {
+            Flight::json(["message" => "Your account has been banned."], 409);
+        }
+    } else {
+        // User does not exist, register them
+        $newUser = [
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'password' => md5(uniqid()), // Random password
+            'age' => '', // Google API doesn't provide age
+            'admin' => 0
+        ];
+        $userService->add($newUser);
+
+        $user = $userService->getUserByEmail($email);
+        unset($user['password']);
+        $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
+        Flight::json(['token' => $jwt]);
+    }
+    $redirectUrl = Config::APP_BASE_URL() . "/index.html?token=" . $jwt;
+    Flight::redirect($redirectUrl);
+});

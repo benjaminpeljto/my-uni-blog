@@ -1,4 +1,5 @@
-<!-- Page Header-->
+
+<!-- Page Header -->
 <header class="masthead" style="background-image: url('assets/img/profile-backround.jpg'); height: 50vh;margin-bottom: 0%;">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -11,34 +12,39 @@
         </div>
     </div>
 </header>
-<main style="background-image: url('assets/img/watercolor-texture-background-free-vector.jpg'); background-repeat: no-repeat; background-size: cover;padding-top: 2%;padding-bottom: 2%;">
-    <div class="container px-4 px-lg-5">
+
+<!-- Main Content -->
+<main>
+    <div class="container px-4 px-lg-5 mb-4 mt-4">
         <div class="row gx-4 gx-lg-5 justify-content-center align-items-center">
-            <div class="col-md-10 col-lg-4 col-xl-3 mt-4 mt-lg-0">
-                <div class="profile-picture text-center">
-                    <img src="assets/img/profile_image-removebg.png" alt="Profile Picture">
+            <div class="col-md-10 col-lg-4 col-xl-3 mt-4 mt-lg-0 text-center">
+                <div class="profile-picture mb-3">
+                    <img id="profile-profile-image" src='' alt="Profile Picture">
                 </div>
+                <button id="change-profile-picture-btn" class="btn btn-outline-primary" onclick="ProfileService.openImageChangeModal()">Change Profile Picture</button>
             </div>
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="card profile-info-container p-4 shadow" style="background: inherit;">
+                <div class="card profile-info-container p-4 shadow">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4"><strong><u>Profile Information</u></strong></h2>
-                        <div class="d-flex">
+                        <div class="d-flex mb-3">
                             <div class="font-weight-bold flex-grow-1">First Name:</div>
                             <div id="profile-first-name"></div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mb-3">
                             <div class="font-weight-bold flex-grow-1">Last Name:</div>
                             <div id="profile-last-name"></div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mb-3">
                             <div class="font-weight-bold flex-grow-1">Age:</div>
                             <div id="profile-age"></div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mb-4">
                             <div class="font-weight-bold flex-grow-1">Email:</div>
                             <div id="profile-email"></div>
                         </div>
+                        <button id="edit-profile-info-btn" onclick="ProfileService.openEditProfileDataModal()" class="btn btn-outline-primary">Edit Profile Data</button>
+                        <button id="edit-profile-change-password-btn" onclick="ProfileService.openChangeProfilePasswordModal()" class="btn btn-outline-primary">Change password</button>
                     </div>
                 </div>
             </div>
@@ -46,43 +52,181 @@
     </div>
 </main>
 
-<footer style="background-image: linear-gradient(to right, rgba(0, 174, 255, 0.332),rgba(16, 120, 154, 0.271),rgba(77, 104, 214, 0.282),rgba(13, 92, 156, 0.359),rgba(0, 0, 255, 0.151)); padding-right: 482px; padding-left: 482px;">
-    <div class="container px-4 px-lg-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="d-flex justify-content-center">
-                    <a href="https://www.linkedin.com/in/benjamin-peljto/" target="_blank" style="text-decoration: none;">
-                        <div class="d-flex flex-column align-items-center mr-4">
-                            <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
-                            <span style="margin-top: 5px;">Benjamin Peljto</span>
-                        </div>
-                    </a>
-                    <a href="https://www.linkedin.com/in/dzelila-tinjak-b43b3b276/" target="_blank" style="text-decoration: none;">
-                        <div class="d-flex flex-column align-items-center mx-4">
-                            <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
-                            <span style="margin-top: 5px;">Dželila Tinjak</span>
-                        </div>
-                    </a>
-                    <a href="https://www.linkedin.com/in/tarik-panjeta/" target="_blank" style="text-decoration: none;">
-                        <div class="d-flex flex-column align-items-center ml-4">
-                            <i class="fab fa-linkedin fa-3x mb-2 rounded-circle" style="background-color: #0077B5; color: white; padding: 10px;"></i>
-                            <span style="margin-top: 5px;">Tarik Panjeta</span>
-                        </div>
-                    </a>
+
+<!-- ? Image upload modal -->
+<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="profilePictureChangeForm">
+                <div class="modal-header">
+                    <h4 id="upload-modal-title" class="modal-title">Upload Image</h4>
                 </div>
-            </div>
+                <input id="upload_image_id" name="id" hidden>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="image_file">Choose Image:</label>
+                        <input
+                                type="file"
+                                id="image_file"
+                                name="image"
+                                required
+                                class="form-control"
+                                accept="image/*"
+                        />
+                    </div>
+                </div>
+                <div class="error"><span></span></div>
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            class="btn btn-default"
+                            onclick="ProfileService.closeImageChangeModal()"
+                    >Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+            <img id="imagePreview" src="" alt="Image Preview" style="display: none; max-width: 100%; height: auto;"/>
         </div>
-        <div class="row justify-content-center" style="margin-top: 20px;">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="small text-center text-muted fst-italic">Copyright &copy;
-                    Benjamin Peljto, Dželila Tinjak, and Tarik Panjeta 2023
-                </div>
+    </div>
+</div>
+
+<!-- ? Edit profile data modal -->
+<div class="modal fade" id="editProfileDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit profile</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileDataForm">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="editProfileFirstName">First name:</label>
+                            <input
+                                    type="text"
+                                    id="editProfileFirstName"
+                                    name="first_name"
+                                    class="form-control"
+                            />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="editProfileLastName">Last name:</label>
+                            <input
+                                    type="text"
+                                    id="editProfileLastName"
+                                    name="last_name"
+                                    class="form-control"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="editProfileAge">Age:</label>
+                        <input
+                                type="number"
+                                id="editProfileAge"
+                                name="age"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="editProfileEmail">Email:</label>
+                        <input
+                                type="email"
+                                id="editProfileEmail"
+                                name="email"
+                                class="form-control"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProfilePasswordCheck">Confirm with password</label>
+                        <input
+                                type="password"
+                                id="editProfilePasswordCheck"
+                                name="password"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="error"><span></span></div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                onclick="ProfileService.closeEditProfileDataModal()"
+                        >Close</button>
+                        <button type="submit" class="btn btn-success">Edit profile</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</footer>
-<!--
+</div>
+
+
+<!-- ? Change profile password modal -->
+<div class="modal fade" id="changeProfilePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change password</h4>
+            </div>
+            <div class="modal-body">
+                <form id="changeProfilePasswordForm">
+                    <div class="form-group">
+                        <label for="profileCurrentPassword">Current password:</label>
+                        <input
+                                type="password"
+                                id="profileCurrentPassword"
+                                name="profileCurrentPassword"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileNewPassword">New password:</label>
+                        <input
+                                type="password"
+                                id="profileNewPassword"
+                                name="password"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileNewPassword2">Confirm new password:</label>
+                        <input
+                                type="password"
+                                id="profileNewPassword2"
+                                name="password2"
+                                class="form-control"
+                                placeholder=""
+                        />
+                    </div>
+
+                    <div class="error"><span></span></div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                onclick="ProfileService.closeChangeProfilePasswordModal()"
+                        >Close</button>
+                        <button type="submit" class="btn btn-success">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
-        ProfileService.init();
-</script>-->
+    ProfileService.init();
+</script>
