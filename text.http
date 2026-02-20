@@ -1,7 +1,0 @@
-
-POST localhost/web-programming2023_blog/rest/login
-Content-Type: application/json
-{
-    "email": "benjaminpeljto00@gmail.com",
-    "password": "benjaminsara"
-}
